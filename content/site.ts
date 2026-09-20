@@ -3,28 +3,26 @@ import type { TimelineEntry } from "@/components/ui/retro-timeline";
 
 export const site = {
   name: "Carlos Augusto",
-  headline: "Web Developer | JavaScript | NodeJS | ReactJS",
-  location: "Floriano, PI",
+  headline: "Desenvolvedor Full Stack | Java · React · PostgreSQL",
+  location: "Teresina, PI",
   email: "carlos.aug.developer@gmail.com",
   linkedin:
     "https://www.linkedin.com/in/carlos-augusto-miranda-brandão-243317183/",
   github: "https://github.com/Jackie098",
+  cv: "/cv_Carlos_Augusto_09-26.pdf",
+  cvFilename: "CV_Carlos_Augusto.pdf",
   pitch:
-    "Produto web ponta a ponta: React no cliente, Node e TypeScript no servidor — e liderança de time quando a entrega precisa de direção, não só de código.",
+    "Full stack em serviços públicos e produto: Java (Spring/Quarkus), React/Next e PostgreSQL — da API ao backoffice, em produção.",
+  playerBio:
+    "Pergunto até o produto achar rumo. Otimizo pelo budget e pela UX: app enxuto pro cliente, claro pra quem usa. Dou vida a ideia, amadureço produto e abro caminho que ainda não estava no mapa.",
   about: [
-    "Hoje estou na ETIPI, no time de customização do PiDigital: novas funcionalidades no sistema, em produção, no Piauí.",
-    "Antes disso liderei sprint e produto (IPdelve), coordenei 3 pessoas num gateway de pagamentos (Lekko) e entreguei fullstack em varejo (Datasales): React, Node serverless e AWS, com integrações de Facebook, Instagram, WhatsApp e SMS.",
-    "Quando o backend travava o frontend, aprendi Django REST e entrei na API. Inglês: EF SET B2 — leio documentação; a fala ainda está em progresso.",
+    "Formado em Análise e Desenvolvimento de Sistemas pelo IFPI. Hoje estou na ETIPI, no time de Sustentação do PiDigital: funcionalidades digitais do Detran-PI em Java/Spring, React/Next e RabbitMQ.",
+    "Como freelancer, concebi e entreguei a plataforma da Associação JET (J&T): landing, backoffice e API em Quarkus + PostgreSQL.",
+    "Antes, fullstack em varejo na Datasales (React, Node serverless, AWS e publicação em Facebook, Instagram, WhatsApp e SMS). Passagem mais curta na IPdelve, em patentes. Inglês: ETSET B2 — leio documentação; a fala ainda está em progresso.",
   ],
 } as const;
 
-export const profileTags = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Node",
-  "AWS",
-] as const;
+export const profileTags = ["React", "Java", "PostgreSQL"] as const;
 
 export const timeline: TimelineEntry[] = [
   {
@@ -33,50 +31,40 @@ export const timeline: TimelineEntry[] = [
     title: "Desenvolvedor Fullstack",
     org: "ETIPI — Teresina, PI",
     description:
-      "Time de customização do PiDigital: novas funcionalidades no sistema da Empresa de Tecnologia da Informação do Piauí.",
-    tags: ["Fullstack", "Customização"],
+      "Sustentação do PiDigital: novas funcionalidades em Java e React para fluxos do Detran-PI (Renach e Renavam). Entregas em produção para cidadãos e servidores — renovação de CNH com selfie, transferência de propriedade e primeiro emplacamento.",
+    tags: ["Java/Spring", "React/Next", "RabbitMQ"],
     type: "work",
     current: true,
   },
   {
-    id: "lekko",
-    year: "23–24",
-    title: "Tech Lead",
-    org: "Lekko Tecnologia — São João dos Patos, MA",
+    id: "jet",
+    year: "25–26",
+    title: "Desenvolvedor Full Stack (Freelance)",
+    org: "Associação Desportiva JET (J&T) — Sul do Piauí",
     description:
-      "Gateway de pagamentos e coordenação de um time de 3 desenvolvedores.",
-    tags: ["Pagamentos", "Liderança"],
+      "Presença digital ponta a ponta: landing Next.js, backoffice React e API Quarkus + PostgreSQL. Membros, patrocínio e check-in; CMS Strapi; produção native (GraalVM) com pipeline em Vercel, Railway e GitLab CI.",
+    tags: ["Quarkus", "React", "PostgreSQL"],
     type: "work",
   },
   {
     id: "ipdelve",
     year: "2023",
-    title: "Front, Tech Lead e Fullstack",
+    title: "Desenvolvedor Fullstack",
     org: "IPdelve — Floriano, PI",
     description:
-      "Comecei no front (práticas, performance, bugs e features). Virei tech lead: sprints com o PO, granularização do trabalho e decisões técnicas. Depois entrei no backend com Django REST para a API não travar o frontend.",
-    tags: ["React", "Next.js", "Django REST", "Scrum"],
+      "React/Next na plataforma de patentes; Django REST quando a API travava o front.",
+    tags: ["React", "Django REST"],
     type: "work",
   },
   {
     id: "datasales",
     year: "21–22",
-    title: "Fullstack Developer",
+    title: "Desenvolvedor Fullstack",
     org: "Datasales — São Paulo",
     description:
-      "Produto de automação de marketing para varejo: APIs em Node/serverless, React no cliente, AWS (S3, Lambda, CloudWatch, Route53, RDS) e integrações com Facebook, Instagram, WhatsApp e SMS.",
-    tags: ["React", "Node", "AWS", "Serverless"],
+      "Automação de marketing para varejo: React (MUI), Node/TypeScript e serverless na AWS (Lambda, S3, RDS, CloudWatch). Publicação de artes no mesmo fluxo — Facebook, Instagram, WhatsApp e SMS — com formulários longos até o envio. APIs JWT/MySQL e correção de legado em Scrum.",
+    tags: ["React", "Node", "AWS"],
     type: "work",
-  },
-  {
-    id: "ifpi-monitor",
-    year: "2019",
-    title: "Monitor — POO e programação web",
-    org: "IFPI — Floriano",
-    description:
-      "Monitoria de orientação a objetos em Java (2019) e de backend Node (rotas, tipos de requisição, banco) em 2021.",
-    tags: ["Java", "Node"],
-    type: "edu",
   },
   {
     id: "ifpi-ads",
@@ -84,18 +72,8 @@ export const timeline: TimelineEntry[] = [
     title: "Tecnólogo em ADS",
     org: "IFPI — Instituto Federal do Piauí",
     description:
-      "Formação voltada ao mercado: redes, segurança web, SO, POO, desktop, web, mobile, gestão de projetos, métodos ágeis e estrutura de dados.",
+      "Análise e Desenvolvimento de Sistemas (março de 2017 – janeiro de 2022).",
     tags: ["ADS"],
-    type: "edu",
-  },
-  {
-    id: "gostack",
-    year: "19–21",
-    title: "GoStack 9.0",
-    org: "Rocketseat",
-    description:
-      "Bootcamp prático: Node, React, React Native, testes, CI e deploy — da primeira rota à loja.",
-    tags: ["Node", "React", "React Native"],
     type: "edu",
   },
 ];
@@ -112,32 +90,31 @@ export type SiteProject = {
 
 export const projects: SiteProject[] = [
   {
+    id: "etipi",
+    title: "PiDigital / Detran-PI",
+    org: "ETIPI — serviços digitais do cidadão",
+    description:
+      "Fila no balcão e fluxos do Detran ainda manuais. No time de Sustentação, evoluí Renach e Renavam em Java e React: renovação de CNH com selfie, transferência de propriedade e primeiro emplacamento. Padronizei feedbacks num backoffice unificado e colaborei na UI do Keycloak. Prova: serviços usados por cidadãos e servidores no Piauí.",
+    tags: ["Java/Spring", "React/Next", "Oracle", "RabbitMQ", "Keycloak"],
+    variant: "primary",
+  },
+  {
+    id: "jet",
+    title: "Associação JET",
+    org: "J&T — presença digital ponta a ponta",
+    description:
+      "Associação precisava de captação e gestão operacional. Entreguei landing (Next.js) com pré-cadastro, backoffice (React + Vite) e API Quarkus + PostgreSQL: membros pagantes e patrocinados, categorias Ouro/Prata/Bronze e check-in por CPF. CMS Strapi para notícias sem deploy; native GraalVM cortou RAM de ~2 GB para picos de ~300 MB.",
+    tags: ["Quarkus", "PostgreSQL", "React", "Next.js", "Strapi"],
+    variant: "secondary",
+  },
+  {
     id: "datasales",
     title: "Datasales",
     org: "Automação de marketing para varejo",
     description:
-      "Varejista precisava publicar encarte e campanha em várias plataformas no mesmo fluxo. Segmentei formulários com validações distintas até o envio e, no backend, integrei as APIs de Facebook, Instagram, WhatsApp e SMS. Prova: produto vivo em datasales.io.",
-    tags: ["React", "Node", "Serverless", "AWS"],
+      "Varejista precisava publicar encarte e campanha em várias plataformas no mesmo fluxo. Segmentei formulários com validações distintas até o envio e, no backend, integrei Facebook, Instagram, WhatsApp e SMS em Node serverless na AWS. Prova: produto vivo em datasales.io.",
+    tags: ["React", "Node", "TypeScript", "AWS"],
     href: "https://datasales.io/",
-    variant: "primary",
-  },
-  {
-    id: "ipdelve",
-    title: "Mercado de Patentes",
-    org: "IPdelve — inteligência competitiva",
-    description:
-      "Front travava na API. Entrei no Django REST, documentei e desbloqueei entrega. No cliente, Next/React, design system e Scrum com o time até o MVP. Prova: mercadodepatente.com.br.",
-    tags: ["Next.js", "Django REST", "AWS", "Scrum"],
-    href: "https://mercadodepatente.com.br/about-us",
-    variant: "secondary",
-  },
-  {
-    id: "lekko",
-    title: "Gateway de pagamentos",
-    org: "Lekko Tecnologia",
-    description:
-      "Produto de pagamento sem time grande. Construí o gateway e dirigi 3 desenvolvedores — prazo e direção técnica, não só código. Sem URL pública.",
-    tags: ["Tech Lead", "Pagamentos"],
     variant: "accent",
   },
 ];
@@ -148,15 +125,16 @@ export type SiteTech = {
 };
 
 export const tech: SiteTech[] = [
-  { id: "js", name: "JavaScript" },
-  { id: "ts", name: "TypeScript" },
   { id: "react", name: "React" },
   { id: "node", name: "Node.js" },
-  { id: "aws", name: "AWS" },
-  { id: "serverless", name: "Serverless" },
-  { id: "django", name: "Django REST" },
-  { id: "scrum", name: "Scrum / Jira" },
   { id: "java", name: "Java" },
+  { id: "spring", name: "Spring" },
+  { id: "quarkus", name: "Quarkus" },
+  { id: "sql", name: "PostgreSQL" },
+  { id: "rabbit", name: "RabbitMQ" },
+  { id: "python", name: "Python" },
+  { id: "ts", name: "TypeScript" },
+  { id: "next", name: "Next.js" },
 ];
 
 export type SiteSkill = {
@@ -166,10 +144,10 @@ export type SiteSkill = {
 };
 
 export const skills: SiteSkill[] = [
-  { label: "React / JS", value: 85, variant: "primary" },
-  { label: "Node / TS", value: 80, variant: "mana" },
-  { label: "AWS / Serverless", value: 70, variant: "accent" },
-  { label: "Django REST", value: 55, variant: "exp" },
-  { label: "Java", value: 40, variant: "warning" },
-  { label: "Scrum / lead", value: 75, variant: "secondary" },
+  { label: "React", value: 85, variant: "primary" },
+  { label: "Node", value: 85, variant: "mana" },
+  { label: "Java / Spring / Quarkus", value: 85, variant: "accent" },
+  { label: "SQL", value: 75, variant: "exp" },
+  { label: "RabbitMQ", value: 60, variant: "warning" },
+  { label: "Python", value: 50, variant: "secondary" },
 ];

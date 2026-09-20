@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Cloud,
   Code,
   Cpu,
   Database,
+  Download,
   Link as LinkIcon,
+  Linkedin,
   Mail,
+  Message,
   React as ReactIcon,
   Script,
   Server,
-  Users,
-  Zap,
 } from "pixelarticons/react";
 
+import { PlayerDossier } from "@/components/player-dossier";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -47,15 +48,16 @@ import {
 const mailto = `mailto:${site.email}?subject=${encodeURIComponent("Conversar")}`;
 
 const techIcons: Record<string, TechItem["icon"]> = {
-  js: <Script width={24} height={24} aria-hidden />,
-  ts: <Code width={24} height={24} aria-hidden />,
   react: <ReactIcon width={24} height={24} aria-hidden />,
   node: <Server width={24} height={24} aria-hidden />,
-  aws: <Cloud width={24} height={24} aria-hidden />,
-  serverless: <Zap width={24} height={24} aria-hidden />,
-  django: <Database width={24} height={24} aria-hidden />,
-  scrum: <Users width={24} height={24} aria-hidden />,
   java: <Cpu width={24} height={24} aria-hidden />,
+  spring: <Code width={24} height={24} aria-hidden />,
+  quarkus: <Code width={24} height={24} aria-hidden />,
+  sql: <Database width={24} height={24} aria-hidden />,
+  rabbit: <Message width={24} height={24} aria-hidden />,
+  python: <Script width={24} height={24} aria-hidden />,
+  ts: <Code width={24} height={24} aria-hidden />,
+  next: <ReactIcon width={24} height={24} aria-hidden />,
 };
 
 const techItems: TechItem[] = tech.map((item) => ({
@@ -103,9 +105,9 @@ export default function HomePage() {
       <main className="flex flex-col gap-20 pb-8">
         <section
           aria-labelledby="hero-heading"
-          className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start"
+          className="flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center text-center"
         >
-          <div className="flex flex-col gap-6">
+          <div className="flex w-full max-w-xl flex-col items-center gap-6">
             <p className="font-press-start text-[0.5rem] text-success">
               <TypingText text={`> ${site.headline}`} />
             </p>
@@ -118,31 +120,39 @@ export default function HomePage() {
             <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
               {site.pitch}
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center gap-3">
               <Button asChild variant="primary" size="lg">
-                <a href={mailto}>Conversar por email</a>
+                <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                  <Linkedin width={24} height={24} aria-hidden />
+                  Entrar em contato
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="#cases">Ver cases</a>
+                <a href={site.cv} download={site.cvFilename}>
+                  <Download width={24} height={24} aria-hidden />
+                  Baixar CV
+                </a>
               </Button>
             </div>
           </div>
+        </section>
 
+        <PlayerDossier>
           <Profile
             name={site.name}
             role={site.headline}
-            bio={site.pitch}
+            bio={site.playerBio}
             initials="CA"
             location={site.location}
             status="online"
             tags={[...profileTags]}
             links={[
-              GithubLink(site.github),
               LinkedinLink(site.linkedin),
               EmailLink(site.email),
+              GithubLink(site.github),
             ]}
           />
-        </section>
+        </PlayerDossier>
 
         <section id="sobre" className="scroll-mt-24" aria-labelledby="sobre-heading">
           <h2
@@ -249,22 +259,29 @@ export default function HomePage() {
             Contato
           </h2>
           <p className="mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground">
-            Recrutador, proposta ou papo técnico: email primeiro. LinkedIn e
-            GitHub abrem em outra aba.
+            Recrutador, proposta ou papo técnico: LinkedIn primeiro. Email em
+            seguida. CV em PDF para download.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild variant="primary" size="lg">
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                <Linkedin width={24} height={24} aria-hidden />
+                Entrar em contato
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <a href={site.cv} download={site.cvFilename}>
+                <Download width={24} height={24} aria-hidden />
+                Baixar CV
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg">
               <a href={mailto}>
                 <Mail width={24} height={24} aria-hidden />
-                Conversar por email
+                Enviar email
               </a>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
-                Abrir LinkedIn
-              </a>
-            </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="ghost" size="lg">
               <a href={site.github} target="_blank" rel="noopener noreferrer">
                 Abrir GitHub
               </a>

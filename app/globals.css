@@ -729,6 +729,19 @@ img,
   }
 }
 
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.sheet-up {
+  animation: sheet-up 320ms ease-out;
+}
+
 /* ============================================================
    Redução de movimento — todo efeito animado cai para o
    estado final legível. Glow permanece (não é movimento).
@@ -770,5 +783,9 @@ img,
   .pixel-btn:focus-visible:not(:disabled),
   .pixel-btn:active:not(:disabled) {
     transform: none;
+  }
+
+  .sheet-up {
+    animation: none;
   }
 }

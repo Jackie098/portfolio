@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s — Carlos Augusto",
   },
   description:
-    "Web Developer | JavaScript | NodeJS | ReactJS. Produto web ponta a ponta a partir de Floriano, PI.",
+    "Desenvolvedor Full Stack | Java · React · PostgreSQL. Serviços digitais e produto a partir de Teresina, PI.",
 };
 
 export default function RootLayout({
