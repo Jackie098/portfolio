@@ -17,7 +17,12 @@ function place(el: HTMLElement, x: number, y: number) {
   el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(var(--trail-scale, 1))`;
 }
 
-function sample(history: Point[], ago: number, now: number, fallback: Point) {
+function sample(
+  history: Point[],
+  ago: number,
+  now: number,
+  fallback: { x: number; y: number },
+) {
   const at = now - ago;
   for (let i = history.length - 1; i >= 0; i--) {
     if (history[i].t <= at) return history[i];
