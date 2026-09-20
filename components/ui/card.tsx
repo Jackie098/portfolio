@@ -39,7 +39,11 @@ function Card({
     <div
       data-slot="card"
       data-variant={variant ?? "default"}
-      className={cn(cardVariants({ variant }), "flex flex-col gap-4 p-5", className)}
+      className={cn(
+        cardVariants({ variant }),
+        "flex min-w-0 flex-col gap-4 p-5",
+        className,
+      )}
       {...props}
     />
   );
@@ -82,7 +86,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-content"
-      className={cn("flex flex-col gap-3 text-sm", className)}
+      className={cn("flex min-w-0 flex-col gap-3 text-sm", className)}
       {...props}
     />
   );

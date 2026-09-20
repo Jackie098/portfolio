@@ -125,32 +125,34 @@ export function RetroSlider({
 
   return (
     <div
-      className={cn("relative flex flex-col gap-3", className)}
+      className={cn(
+        "relative flex w-full min-w-0 max-w-full flex-col gap-3",
+        className,
+      )}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* ── Left fade mask ── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-background to-transparent"
-      />
-      {/* ── Right fade mask ── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-background to-transparent"
-      />
-
       {/* ── Track ── */}
-      <div className="overflow-hidden">
+      <div className="relative min-w-0 overflow-hidden">
+        {/* Fades no viewport, não no root — senão cobrem os controles. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-card to-transparent"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-card to-transparent"
+        />
+
         {/* Accessible item list — the duplicated track is aria-hidden */}
         <p className="sr-only">
           Tecnologias: {items.map((t) => t.name).join(", ")}
         </p>
 
         <ul
-          className="marquee-track flex w-max gap-3 py-1"
+          className="marquee-track flex w-max max-w-none gap-3 py-1"
           data-paused={paused ? "true" : undefined}
           data-dir={dir === "reverse" ? "reverse" : undefined}
           aria-hidden
