@@ -18,6 +18,7 @@ function getSharedAudio() {
   if (window.__retroBgm) return window.__retroBgm;
   const audio = new Audio();
   audio.preload = "auto";
+  audio.loop = false;
   window.__retroBgm = audio;
   return audio;
 }
@@ -141,6 +142,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const applyIndexRef = React.useRef<(next: number, shouldPlay: boolean) => void>(
     () => {},
   );
+  const playGenRef = React.useRef(0);
+  const handlingEndedRef = React.useRef(false);
 
   const [playing, setPlaying] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
@@ -154,6 +157,23 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     [prefs],
   );
 
+  const playAudio = React.useCallback((audio: HTMLAudioElement, waitForCanPlay = false) => {
+    if (!soundEnabledRef.current) {
+      setPlaying(false);
+      return;
+    }
+    const gen = ++playGenRef.current;
+    const start = () => {
+      if (gen !== playGenRef.current) return;
+      void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    };
+    if (!waitForCanPlay && audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+      start();
+      return;
+    }
+    audio.addEventListener("canplay", start, { once: true });
+  }, []);
+
   const applyIndex = React.useCallback(
     (next: number, shouldPlay: boolean) => {
       const audio = getSharedAudio();
@@ -161,20 +181,25 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       if (clamped !== indexRef.current) {
         prevIndexRef.current = indexRef.current;
       }
+      indexRef.current = clamped;
       persistPatch({ currentIndex: clamped });
-      audio.pause();
-      audio.src = TRACKS[clamped].src;
-      audio.load();
-      if (shouldPlay && soundEnabledRef.current) {
-        void audio
-          .play()
-          .then(() => setPlaying(true))
-          .catch(() => setPlaying(false));
+      const nextSrc = TRACKS[clamped].src;
+      const sameSrc = audio.src.endsWith(nextSrc);
+      if (!sameSrc) {
+        audio.src = nextSrc;
       } else {
+        audio.currentTime = 0;
+      }
+      audio.loop = repeatRef.current === "one";
+      if (shouldPlay) {
+        playAudio(audio, !sameSrc);
+      } else {
+        playGenRef.current += 1;
+        audio.pause();
         setPlaying(false);
       }
     },
-    [persistPatch],
+    [persistPatch, playAudio],
   );
 
   React.useEffect(() => {
@@ -220,27 +245,39 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       setProgress((audio.currentTime / dur) * 100);
     };
 
-    const onEnded = () => {
+    const advanceAfterEnd = () => {
+      if (handlingEndedRef.current) return;
+      handlingEndedRef.current = true;
+
       if (repeatRef.current === "one") {
         audio.currentTime = 0;
-        if (soundEnabledRef.current) {
-          void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+        playAudio(audio);
+      } else {
+        const isLast = indexRef.current >= TRACKS.length - 1;
+        if (repeatRef.current === "none" && !shuffleRef.current && isLast) {
+          setPlaying(false);
+        } else if (shuffleRef.current) {
+          applyIndexRef.current(pickRandom(indexRef.current), true);
+        } else {
+          applyIndexRef.current((indexRef.current + 1) % TRACKS.length, true);
         }
-        return;
       }
-      if (repeatRef.current === "none") {
-        setPlaying(false);
-        return;
-      }
-      if (shuffleRef.current) {
-        applyIndexRef.current(pickRandom(indexRef.current), true);
-        return;
-      }
-      applyIndexRef.current((indexRef.current + 1) % TRACKS.length, true);
+
+      window.setTimeout(() => {
+        handlingEndedRef.current = false;
+      }, 50);
+    };
+
+    const onEnded = () => {
+      // play() no mesmo tick do `ended` é ignorado em alguns browsers.
+      window.setTimeout(advanceAfterEnd, 0);
     };
 
     const onPlay = () => setPlaying(true);
-    const onPause = () => setPlaying(false);
+    const onPause = () => {
+      setPlaying(false);
+      if (audio.ended) window.setTimeout(advanceAfterEnd, 0);
+    };
 
     audio.addEventListener("timeupdate", onTime);
     audio.addEventListener("loadedmetadata", onTime);
@@ -256,7 +293,11 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       audio.removeEventListener("pause", onPause);
       audio.pause();
     };
-  }, []);
+  }, [playAudio]);
+
+  React.useEffect(() => {
+    getSharedAudio().loop = prefs.repeat === "one";
+  }, [prefs.repeat]);
 
   React.useEffect(() => {
     const audio = getSharedAudio();
