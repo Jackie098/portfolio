@@ -15,6 +15,7 @@ export const site = {
   heroCodingAvatar: "/carlos-pixel-avatar-coding-laptop-tight-frame.png",
   heroCodingAvatarLight:
     "/carlos-pixel-avatar-coding-desliga-isso-deadpan-tight-frame.png",
+  techMageAvatar: "/carlos-pixel-avatar-tech-mage.png",
   pitch:
     "Desenvolvo produtos e sistemas sob medida, com foco em performance, clareza e resultado para o negócio.",
   playerBio:

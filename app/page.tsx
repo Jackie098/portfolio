@@ -160,16 +160,30 @@ export default function HomePage() {
         </PlayerDossier>
 
         <section id="sobre" className="scroll-mt-24" aria-labelledby="sobre-heading">
-          <h2
-            id="sobre-heading"
-            className="mb-6 font-press-start text-sm text-primary retro-glow"
-          >
-            Sobre
-          </h2>
-          <div className="flex max-w-prose flex-col gap-4 text-sm leading-relaxed text-muted-foreground">
-            {site.about.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+          <div className="grid items-center gap-8 md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] md:gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-12">
+            <figure className="relative mx-auto w-full max-w-sm overflow-hidden md:mx-0 md:max-w-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={site.techMageAvatar}
+                alt={`${site.name} em pixel art, variação tech mage`}
+                width={1024}
+                height={1024}
+                className="h-auto w-full"
+              />
+            </figure>
+            <div className="flex flex-col gap-4 text-sm leading-relaxed text-muted-foreground md:items-end md:text-right">
+              <h2
+                id="sobre-heading"
+                className="font-press-start text-sm text-primary retro-glow"
+              >
+                Sobre
+              </h2>
+              <div className="flex max-w-prose flex-col gap-4">
+                {site.about.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
