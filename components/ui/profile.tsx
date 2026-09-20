@@ -140,9 +140,9 @@ export function Profile({
             <span
               aria-hidden
               className={cn(
-                "inline-block h-2 w-2 rounded-full",
+                "status-dot h-2 w-2 rounded-full",
                 statusCfg.dotClass,
-                status === "online" && "pulse-neon",
+                status === "online" && "status-dot--pulse",
               )}
             />
             <span
