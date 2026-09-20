@@ -85,9 +85,91 @@ export default function DesignSystemPage() {
         </p>
       </header>
 
+      <section className="mb-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card variant="danger">
+          <CardHeader>
+            <CardTitle>Combat Skills</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Progress label="Plasma Mastery" value={60} variant="health" showValue />
+            <Progress label="Combat Reflexes" value={0} variant="health" showValue />
+            <Progress label="Overcharge" value={0} variant="health" showValue />
+          </CardContent>
+        </Card>
+        <Card variant="primary">
+          <CardHeader>
+            <CardTitle>Tech Skills</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Progress label="Cyber Defense" value={40} variant="mana" showValue />
+            <Progress label="Energy Efficiency" value={33} variant="mana" showValue />
+            <Progress label="Neural Link" value={0} variant="mana" showValue />
+          </CardContent>
+        </Card>
+        <Card variant="success">
+          <CardHeader>
+            <CardTitle>Survival Skills</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Progress label="Survival Instinct" value={100} variant="exp" showValue />
+          </CardContent>
+        </Card>
+        <Card variant="success">
+          <CardHeader>
+            <CardTitle>Skill Details</CardTitle>
+            <CardDescription>Combat skill</CardDescription>
+          </CardHeader>
+          <CardContent className="font-press-start text-[0.625rem] uppercase leading-loose">
+            <p className="text-destructive">Plasma Mastery</p>
+            <p className="text-muted-foreground">
+              Increases plasma weapon damage by 15% per level.
+            </p>
+            <p className="flex justify-between gap-3">
+              <span className="text-muted-foreground">Current level</span>
+              <span>3</span>
+            </p>
+            <p className="flex justify-between gap-3">
+              <span className="text-muted-foreground">Max level</span>
+              <span>5</span>
+            </p>
+            <p className="flex justify-between gap-3">
+              <span className="text-muted-foreground">Status</span>
+              <span>Unlocked</span>
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      <div className="mb-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card variant="secondary">
+          <CardHeader>
+            <CardTitle>Secondary</CardTitle>
+            <CardDescription>Borda e título roxos</CardDescription>
+          </CardHeader>
+        </Card>
+        <Card variant="accent">
+          <CardHeader>
+            <CardTitle>Accent</CardTitle>
+            <CardDescription>Borda e título rosa</CardDescription>
+          </CardHeader>
+        </Card>
+        <Card variant="warning">
+          <CardHeader>
+            <CardTitle>Warning</CardTitle>
+            <CardDescription>Borda e título amarelos</CardDescription>
+          </CardHeader>
+        </Card>
+        <Card variant="glow">
+          <CardHeader>
+            <CardTitle>Glow</CardTitle>
+            <CardDescription>Primary + halo neon</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Typography */}
-        <Card>
+        <Card variant="primary">
           <CardHeader>
             <CardTitle>Typography</CardTitle>
             <CardDescription>Press Start 2P + Orbitron</CardDescription>
@@ -106,7 +188,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Colors */}
-        <Card>
+        <Card variant="secondary">
           <CardHeader>
             <CardTitle>Colors</CardTitle>
             <CardDescription>Paleta neon</CardDescription>
@@ -126,7 +208,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Action Buttons */}
-        <Card>
+        <Card variant="warning">
           <CardHeader>
             <CardTitle>Action Buttons</CardTitle>
             <CardDescription>
@@ -148,7 +230,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Button sizes + ícones */}
-        <Card>
+        <Card variant="accent">
           <CardHeader>
             <CardTitle>Button Sizes</CardTitle>
             <CardDescription>sm / md / lg / icon</CardDescription>
@@ -212,7 +294,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Terminal / typing */}
-        <Card>
+        <Card variant="success">
           <CardHeader>
             <CardTitle>Typing</CardTitle>
             <CardDescription>Texto revelado por máscara CSS</CardDescription>
@@ -225,7 +307,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Glitch + Neon + Pulse */}
-        <Card>
+        <Card variant="accent">
           <CardHeader>
             <CardTitle>Text Effects</CardTitle>
             <CardDescription>Glitch, neon sign e pulse</CardDescription>
@@ -246,7 +328,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Loading */}
-        <Card>
+        <Card variant="danger">
           <CardHeader>
             <CardTitle>Loading</CardTitle>
             <CardDescription>Rotação em passos discretos</CardDescription>
@@ -259,7 +341,7 @@ export default function DesignSystemPage() {
         </Card>
 
         {/* Ícones */}
-        <Card className="md:col-span-2">
+        <Card variant="primary" className="md:col-span-2">
           <CardHeader>
             <CardTitle>Icons</CardTitle>
             <CardDescription>pixelarticons — conjunto free (24px)</CardDescription>
@@ -288,7 +370,8 @@ export default function DesignSystemPage() {
           <CardContent>
             <p className="text-sm text-muted-foreground">
               Seta pixelada por padrão, mão neon sobre elementos interativos e
-              cursor nativo dentro de campos de texto.
+              cursor nativo dentro de campos de texto. Sobre cada variante de
+              botão, mão e quadrado trocam de token p/ contrastar com o fill.
             </p>
             <p className="text-xs text-muted-foreground">
               Em telas de toque e com redução de movimento ativa, o rastro é

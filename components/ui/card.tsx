@@ -4,12 +4,24 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "pixel-corners [--pixel-step:5px] border-2 bg-card text-card-foreground",
+  "pixel-corners [--pixel-step:5px] [--card-accent:var(--primary)] [--card-frame:var(--border)] bg-card text-card-foreground shadow-[inset_0_0_0_2px_var(--card-frame)]",
   {
     variants: {
       variant: {
-        default: "border-border",
-        glow: "border-primary [filter:drop-shadow(0_0_14px_color-mix(in_srgb,var(--primary)_40%,transparent))]",
+        default: "",
+        primary:
+          "[--card-frame:color-mix(in_srgb,var(--primary)_35%,transparent)]",
+        secondary:
+          "[--card-accent:var(--secondary)] [--card-frame:color-mix(in_srgb,var(--secondary)_35%,transparent)]",
+        accent:
+          "[--card-accent:var(--accent)] [--card-frame:color-mix(in_srgb,var(--accent)_35%,transparent)]",
+        danger:
+          "[--card-accent:var(--destructive)] [--card-frame:color-mix(in_srgb,var(--destructive)_35%,transparent)]",
+        warning:
+          "[--card-accent:var(--warning)] [--card-frame:color-mix(in_srgb,var(--warning)_35%,transparent)]",
+        success:
+          "[--card-accent:var(--success)] [--card-frame:color-mix(in_srgb,var(--success)_35%,transparent)]",
+        glow: "[--card-frame:color-mix(in_srgb,var(--primary)_35%,transparent)] [filter:drop-shadow(0_0_14px_color-mix(in_srgb,var(--primary)_40%,transparent))]",
       },
     },
     defaultVariants: {
@@ -26,6 +38,7 @@ function Card({
   return (
     <div
       data-slot="card"
+      data-variant={variant ?? "default"}
       className={cn(cardVariants({ variant }), "flex flex-col gap-4 p-5", className)}
       {...props}
     />
@@ -47,7 +60,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
     <h3
       data-slot="card-title"
       className={cn(
-        "font-press-start text-base leading-relaxed text-primary retro-glow",
+        "font-press-start text-base leading-relaxed text-(--card-accent) retro-glow",
         className,
       )}
       {...props}
