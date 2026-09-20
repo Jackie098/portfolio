@@ -131,7 +131,7 @@ export function Profile({
     >
       {/* ── Header bar ── */}
       <div className="flex items-center justify-between">
-        <span className="font-press-start text-[0.5rem] text-muted-foreground tracking-widest">
+        <span className="font-press-start text-[0.5rem] text-warning tracking-widest">
           ▸ P1
         </span>
         {statusCfg && (
@@ -168,7 +168,7 @@ export function Profile({
           <p className="text-sm text-muted-foreground">{role}</p>
 
           {location && (
-            <p className="flex items-center gap-1 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1 text-xs text-accent">
               <MapPin width={12} height={12} aria-hidden />
               {location}
             </p>

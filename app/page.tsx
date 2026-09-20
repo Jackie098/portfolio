@@ -105,35 +105,56 @@ export default function HomePage() {
       <main className="flex flex-col gap-20 pb-8">
         <section
           aria-labelledby="hero-heading"
-          className="flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center text-center"
+          className="flex min-h-[calc(100svh-7rem)] flex-col justify-center"
         >
-          <div className="flex w-full max-w-xl flex-col items-center gap-6">
-            <p className="font-press-start text-[0.5rem] text-success">
-              <TypingText text={`> ${site.headline}`} />
-            </p>
-            <h1
-              id="hero-heading"
-              className="font-press-start text-2xl leading-relaxed text-primary neon-sign sm:text-3xl"
-            >
-              {site.name}
-            </h1>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              {site.pitch}
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Button asChild variant="primary" size="lg">
-                <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
-                  <Linkedin width={24} height={24} aria-hidden />
-                  Entrar em contato
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a href={site.cv} download={site.cvFilename}>
-                  <Download width={24} height={24} aria-hidden />
-                  Baixar CV
-                </a>
-              </Button>
+          <div className="grid w-full items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-12">
+            <div className="flex flex-col items-center gap-6 text-center md:items-start md:text-left">
+              <p className="font-press-start text-[0.5rem] text-success">
+                <TypingText text={`> ${site.headline}`} />
+              </p>
+              <h1
+                id="hero-heading"
+                className="font-press-start text-2xl leading-relaxed text-primary neon-sign sm:text-3xl"
+              >
+                {site.name}
+              </h1>
+              <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                {site.pitch}
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 md:justify-start">
+                <Button asChild variant="primary" size="lg">
+                  <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                    <Linkedin width={24} height={24} aria-hidden />
+                    Entrar em contato
+                  </a>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <a href={site.cv} download={site.cvFilename}>
+                    <Download width={24} height={24} aria-hidden />
+                    Baixar CV
+                  </a>
+                </Button>
+              </div>
             </div>
+            <figure
+              className="relative mx-auto w-full max-w-sm overflow-hidden md:mx-0 md:max-w-none filter-[drop-shadow(0_0_18px_color-mix(in_srgb,var(--primary)_35%,transparent))]"
+              style={{ aspectRatio: "1004 / 1000" }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={site.heroCodingAvatar}
+                alt={`${site.name} em pixel art, codando no notebook`}
+                width={1024}
+                height={1024}
+                className="absolute max-w-none"
+                style={{
+                  width: "calc(1024 / 1004 * 100%)",
+                  height: "calc(1024 / 1000 * 100%)",
+                  left: "calc(-10 / 1004 * 100%)",
+                  top: "calc(-14 / 1000 * 100%)",
+                }}
+              />
+            </figure>
           </div>
         </section>
 
@@ -142,6 +163,7 @@ export default function HomePage() {
             name={site.name}
             role={site.headline}
             bio={site.playerBio}
+            avatar={site.avatar}
             initials="CA"
             location={site.location}
             status="online"
@@ -259,8 +281,9 @@ export default function HomePage() {
             Contato
           </h2>
           <p className="mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground">
-            Recrutador, proposta ou papo técnico: LinkedIn primeiro. Email em
-            seguida. CV em PDF para download.
+            Se quiser conversar sobre projeto, oportunidade ou parceria, pode
+            me chamar no LinkedIn. Se preferir, também deixei email e CV logo
+            abaixo.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild variant="primary" size="lg">
