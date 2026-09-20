@@ -402,7 +402,9 @@ export default function DesignSystemPage() {
         <Card variant="success">
           <CardHeader>
             <CardTitle>Typing</CardTitle>
-            <CardDescription>Texto revelado por máscara CSS</CardDescription>
+            <CardDescription>
+              Digita, espera e reescreve — máscara CSS, texto completo no DOM
+            </CardDescription>
           </CardHeader>
           <CardContent className="font-press-start text-[0.625rem] leading-loose text-success">
             <TypingText text="> system initialized" speed={0.05} caret={false} />

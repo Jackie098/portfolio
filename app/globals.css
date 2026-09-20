@@ -381,7 +381,23 @@ img,
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.typing-in {
   animation: typing-reveal var(--typing-duration, 2s)
+    steps(var(--typing-steps, 20), end) both;
+}
+
+.typing-hold {
+  clip-path: inset(0 0 0 0);
+}
+
+.typing-empty {
+  clip-path: inset(0 100% 0 0);
+}
+
+.typing-out {
+  animation: typing-erase var(--typing-erase-duration, 1s)
     steps(var(--typing-steps, 20), end) both;
 }
 
@@ -391,6 +407,15 @@ img,
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes typing-erase {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
   }
 }
 
