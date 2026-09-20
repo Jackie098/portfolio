@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Orbitron, Press_Start_2P } from "next/font/google";
 
 import { MusicPlayerWidget, MusicProvider } from "@/components/music-player";
+import { ParticleField } from "@/components/particle-field";
 import { RetroCursor } from "@/components/retro-cursor";
 import { SelectionRandomizer } from "@/components/selection-randomizer";
 import { SoundProvider } from "@/components/sound-provider";
@@ -44,7 +45,8 @@ export default function RootLayout({
         <ThemeProvider>
           <SoundProvider>
             <MusicProvider>
-              {children}
+              <ParticleField />
+              <div className="relative z-10">{children}</div>
               <RetroCursor />
               <SelectionRandomizer />
               <MusicPlayerWidget />

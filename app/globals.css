@@ -153,6 +153,8 @@
 html {
   background: var(--background);
   cursor: var(--cursor-arrow), auto;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
   /* Scrollbar pixel art — Webkit */
   scrollbar-color: var(--primary) var(--card);
   scrollbar-width: thin;
@@ -570,6 +572,16 @@ img,
 }
 
 /* ============================================================
+   Fundo de partículas (canvas em ParticleField)
+   ============================================================ */
+.particle-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
    Cursor decorativo que segue o ponteiro
    ============================================================ */
 .cursor-trail {
@@ -722,6 +734,10 @@ img,
    estado final legível. Glow permanece (não é movimento).
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .terminal-cursor::after,
   .neon-sign,
   .pulse-neon,
