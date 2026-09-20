@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import {
   Alien,
+  Blocks,
+  Code,
+  Cpu,
+  Database,
+  Docker,
   Gamepad,
+  GitBranch,
+  Globe,
   Heart,
   Joystick,
   Play,
   Power,
   RobotFace,
+  Server,
   Skull,
   Sword,
   Terminal,
@@ -34,6 +42,7 @@ import {
   Profile,
 } from "@/components/ui/profile";
 import { Progress } from "@/components/ui/progress";
+import { RetroSlider, type TechItem } from "@/components/ui/retro-slider";
 import { RetroTimeline, type TimelineEntry } from "@/components/ui/retro-timeline";
 import { Spinner } from "@/components/ui/spinner";
 import { TypingText } from "@/components/ui/typing-text";
@@ -46,6 +55,20 @@ export const metadata: Metadata = {
 /* ------------------------------------------------------------------ */
 /*  Demo data                                                           */
 /* ------------------------------------------------------------------ */
+
+const techItems: TechItem[] = [
+  { id: "react",      name: "React",       icon: <Zap       width={24} height={24} aria-hidden /> },
+  { id: "next",       name: "Next.js",     icon: <Globe     width={24} height={24} aria-hidden /> },
+  { id: "ts",         name: "TypeScript",  icon: <Code      width={24} height={24} aria-hidden /> },
+  { id: "node",       name: "Node.js",     icon: <Server    width={24} height={24} aria-hidden /> },
+  { id: "docker",     name: "Docker",      icon: <Docker    width={24} height={24} aria-hidden /> },
+  { id: "postgres",   name: "PostgreSQL",  icon: <Database  width={24} height={24} aria-hidden /> },
+  { id: "git",        name: "Git",         icon: <GitBranch width={24} height={24} aria-hidden /> },
+  { id: "tailwind",   name: "Tailwind",    icon: <Cpu       width={24} height={24} aria-hidden /> },
+  { id: "terminal",   name: "Shell / CLI", icon: <Terminal  width={24} height={24} aria-hidden /> },
+  { id: "css",        name: "CSS",         icon: <Blocks    width={24} height={24} aria-hidden /> },
+  { id: "api",        name: "REST / API",  icon: <RobotFace width={24} height={24} aria-hidden /> },
+];
 
 const timelineEntries: TimelineEntry[] = [
   {
@@ -439,6 +462,46 @@ export default function DesignSystemPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* ── Retro Slider ── */}
+      <section className="mt-10">
+        <h2 className="font-press-start text-sm text-primary retro-glow mb-6">
+          Retro Slider
+        </h2>
+        <div className="grid gap-6">
+          <Card variant="primary">
+            <CardHeader>
+              <CardTitle>Tech Stack</CardTitle>
+              <CardDescription>
+                Marquee infinito — hover pausa · ◀ ▶ invertem direção
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="gap-4">
+              <RetroSlider items={techItems} />
+            </CardContent>
+          </Card>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card variant="secondary">
+              <CardHeader>
+                <CardTitle>Sem controles</CardTitle>
+                <CardDescription>controls={"{false}"} — só hover pausa</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RetroSlider items={techItems.slice(0, 6)} controls={false} />
+              </CardContent>
+            </Card>
+            <Card variant="accent">
+              <CardHeader>
+                <CardTitle>Velocidade lenta</CardTitle>
+                <CardDescription>duration={"{60}"} — 60s por loop</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RetroSlider items={techItems} duration={60} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       {/* ── Profile ── */}
       <section className="mt-10">

@@ -137,6 +137,11 @@
   --font-press-start: var(--font-press-start-2p);
   --font-orbitron: var(--font-orbitron);
 
+  /* Orbitron aperta em PT-BR (acentos). Tracking extra só no corpo. */
+  --text-base--letter-spacing: 0.04em;
+  --text-sm--letter-spacing: 0.05em;
+  --text-xs--letter-spacing: 0.06em;
+
   --radius-sm: calc(var(--radius));
   --radius-md: calc(var(--radius) * 2);
   --radius-lg: calc(var(--radius) * 3);
@@ -154,6 +159,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.04em;
 }
 
 *,
@@ -521,6 +527,40 @@ img,
 }
 
 /* ============================================================
+   Marquee — faixa infinita horizontal (RetroSlider)
+   --marquee-duration é sobrescrito inline pelo componente.
+   ============================================================ */
+.marquee-track {
+  animation: marquee var(--marquee-duration, 30s) linear infinite;
+}
+
+.marquee-track[data-dir="reverse"] {
+  animation-name: marquee-reverse;
+}
+
+.marquee-track[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================
    Redução de movimento — todo efeito animado cai para o
    estado final legível. Glow permanece (não é movimento).
    ============================================================ */
@@ -529,7 +569,8 @@ img,
   .neon-sign,
   .pulse-neon,
   .cursor-trail,
-  .glitch-layer {
+  .glitch-layer,
+  .marquee-track {
     animation: none;
   }
 
