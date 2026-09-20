@@ -27,7 +27,14 @@ import {
 } from "@/components/ui/card";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { Input } from "@/components/ui/input";
+import {
+  EmailLink,
+  GithubLink,
+  LinkedinLink,
+  Profile,
+} from "@/components/ui/profile";
 import { Progress } from "@/components/ui/progress";
+import { RetroTimeline, type TimelineEntry } from "@/components/ui/retro-timeline";
 import { Spinner } from "@/components/ui/spinner";
 import { TypingText } from "@/components/ui/typing-text";
 
@@ -35,6 +42,58 @@ export const metadata: Metadata = {
   title: "Design System",
   description: "Showcase do design system retro game / neon.",
 };
+
+/* ------------------------------------------------------------------ */
+/*  Demo data                                                           */
+/* ------------------------------------------------------------------ */
+
+const timelineEntries: TimelineEntry[] = [
+  {
+    id: "t1",
+    year: "2024",
+    title: "Sr. Frontend Engineer",
+    org: "Acme Corp",
+    description:
+      "Liderou migração de SPA legada para Next.js App Router, reduzindo TTI em 42%.",
+    tags: ["Next.js", "TypeScript", "Tailwind"],
+    type: "work",
+    current: true,
+  },
+  {
+    id: "t2",
+    year: "2022",
+    title: "Frontend Engineer",
+    org: "Startup XYZ",
+    description: "Design system do zero, adotado em 3 produtos internos.",
+    tags: ["React", "Figma", "Storybook"],
+    type: "work",
+  },
+  {
+    id: "t3",
+    year: "2020",
+    title: "Ciência da Computação",
+    org: "Universidade Federal",
+    description: "TCC sobre acessibilidade em interfaces web.",
+    tags: ["Python", "Pesquisa"],
+    type: "edu",
+  },
+  {
+    id: "t4",
+    year: "2019",
+    title: "Retro UI Library",
+    description: "Lib open-source de componentes retro para React. +800 stars.",
+    tags: ["React", "Open Source", "CSS"],
+    type: "project",
+  },
+  {
+    id: "t5",
+    year: "2018",
+    title: "Hackathon Champion",
+    org: "DevFest SP",
+    description: "1º lugar em UX Innovation.",
+    type: "achievement",
+  },
+];
 
 const swatches = [
   { name: "Primary", className: "bg-primary" },
@@ -380,6 +439,76 @@ export default function DesignSystemPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* ── Profile ── */}
+      <section className="mt-10">
+        <h2 className="font-press-start text-sm text-primary retro-glow mb-6">
+          Profile
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          <Profile
+            name="Carlos Augusto"
+            role="Sr. Frontend Engineer"
+            bio="Constrói interfaces que parecem jogos e funcionam como ciência. Obcecado por DX, acessibilidade e pixels perfeitos."
+            location="São Paulo, BR"
+            status="online"
+            stats={[
+              { label: "React", value: 90, variant: "primary" },
+              { label: "TypeScript", value: 80, variant: "mana" },
+              { label: "CSS / Design", value: 85, variant: "exp" },
+              { label: "Node.js", value: 65, variant: "warning" },
+            ]}
+            tags={["React", "Next.js", "TypeScript", "Tailwind", "Node.js"]}
+            links={[
+              GithubLink("https://github.com"),
+              LinkedinLink("https://linkedin.com"),
+              EmailLink("hi@example.com"),
+            ]}
+          />
+          <Profile
+            name="P. Zero"
+            role="Pixel Artist · Game Dev"
+            status="busy"
+            location="Internet"
+            bio="Ausência de avatar? Sem problema. O componente renderiza as iniciais com neon glow."
+            tags={["GameMaker", "Aseprite", "LÖVE2D"]}
+            links={[GithubLink("https://github.com")]}
+          />
+        </div>
+      </section>
+
+      {/* ── Retro Timeline ── */}
+      <section className="mt-10">
+        <h2 className="font-press-start text-sm text-primary retro-glow mb-6">
+          Retro Timeline
+        </h2>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card variant="primary">
+            <CardHeader>
+              <CardTitle>Quest Log</CardTitle>
+              <CardDescription>
+                work · edu · project · achievement
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RetroTimeline entries={timelineEntries} />
+            </CardContent>
+          </Card>
+          <Card variant="secondary">
+            <CardHeader>
+              <CardTitle>Só Projects</CardTitle>
+              <CardDescription>Subconjunto filtrado manualmente</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RetroTimeline
+                entries={timelineEntries.filter(
+                  (e) => e.type === "project" || e.type === "achievement",
+                )}
+              />
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </main>
   );
 }
