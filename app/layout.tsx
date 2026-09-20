@@ -24,10 +24,11 @@ const orbitron = Orbitron({
 
 export const metadata: Metadata = {
   title: {
-    default: "Carlos Augusto — Design System",
+    default: "Carlos Augusto — Portfólio",
     template: "%s — Carlos Augusto",
   },
-  description: "Design system retro game / neon.",
+  description:
+    "Web Developer | JavaScript | NodeJS | ReactJS. Produto web ponta a ponta a partir de Floriano, PI.",
 };
 
 export default function RootLayout({

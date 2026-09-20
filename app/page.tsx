@@ -1,37 +1,278 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Gamepad } from "pixelarticons/react";
+import {
+  Cloud,
+  Code,
+  Cpu,
+  Database,
+  Link as LinkIcon,
+  Mail,
+  React as ReactIcon,
+  Script,
+  Server,
+  Users,
+  Zap,
+} from "pixelarticons/react";
 
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import {
+  EmailLink,
+  GithubLink,
+  LinkedinLink,
+  Profile,
+} from "@/components/ui/profile";
+import { RetroSlider, type TechItem } from "@/components/ui/retro-slider";
+import { RetroTimeline } from "@/components/ui/retro-timeline";
 import { TypingText } from "@/components/ui/typing-text";
+import {
+  profileTags,
+  projects,
+  site,
+  skills,
+  tech,
+  timeline,
+} from "@/content/site";
+
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent("Conversar")}`;
+
+const techIcons: Record<string, TechItem["icon"]> = {
+  js: <Script width={24} height={24} aria-hidden />,
+  ts: <Code width={24} height={24} aria-hidden />,
+  react: <ReactIcon width={24} height={24} aria-hidden />,
+  node: <Server width={24} height={24} aria-hidden />,
+  aws: <Cloud width={24} height={24} aria-hidden />,
+  serverless: <Zap width={24} height={24} aria-hidden />,
+  django: <Database width={24} height={24} aria-hidden />,
+  scrum: <Users width={24} height={24} aria-hidden />,
+  java: <Cpu width={24} height={24} aria-hidden />,
+};
+
+const techItems: TechItem[] = tech.map((item) => ({
+  ...item,
+  icon: techIcons[item.id],
+}));
+
+const nav = [
+  { href: "#sobre", label: "Sobre" },
+  { href: "#xp", label: "XP" },
+  { href: "#cases", label: "Cases" },
+  { href: "#stack", label: "Stack" },
+  { href: "#contato", label: "Contato" },
+] as const;
+
+export const metadata: Metadata = {
+  title: "Portfólio",
+  description: `${site.name} — ${site.headline}. ${site.pitch}`,
+};
 
 export default function HomePage() {
   return (
-    <main className="mx-auto flex min-h-svh max-w-2xl flex-col items-center justify-center gap-8 px-6 text-center">
-      <div className="absolute right-6 top-6 flex items-center gap-2">
-        <SoundToggle />
-        <ThemeToggle />
-      </div>
+    <div className="mx-auto max-w-5xl px-6">
+      <header className="sticky top-0 z-20 -mx-6 mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-border bg-background/90 px-6 py-3 backdrop-blur-sm">
+        <nav aria-label="Seções" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          {nav.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="font-press-start text-[0.45rem] text-muted-foreground hover:text-primary focus-visible:text-primary focus-visible:outline-none"
+            >
+              {item.label}
+            </a>
+          ))}
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/design-system">Design System</Link>
+          </Button>
+        </nav>
+        <div className="flex items-center gap-2">
+          <SoundToggle />
+          <ThemeToggle />
+        </div>
+      </header>
 
-      <Gamepad width={72} height={72} className="text-accent pulse-neon" aria-hidden />
+      <main className="flex flex-col gap-20 pb-8">
+        <section
+          aria-labelledby="hero-heading"
+          className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start"
+        >
+          <div className="flex flex-col gap-6">
+            <p className="font-press-start text-[0.5rem] text-success">
+              <TypingText text={`> ${site.headline}`} />
+            </p>
+            <h1
+              id="hero-heading"
+              className="font-press-start text-2xl leading-relaxed text-primary neon-sign sm:text-3xl"
+            >
+              {site.name}
+            </h1>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              {site.pitch}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild variant="primary" size="lg">
+                <a href={mailto}>Conversar por email</a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href="#cases">Ver cases</a>
+              </Button>
+            </div>
+          </div>
 
-      <h1 className="font-press-start text-2xl leading-relaxed text-primary neon-sign sm:text-3xl">
-        Carlos Augusto
-      </h1>
+          <Profile
+            name={site.name}
+            role={site.headline}
+            bio={site.pitch}
+            initials="CA"
+            location={site.location}
+            status="online"
+            tags={[...profileTags]}
+            links={[
+              GithubLink(site.github),
+              LinkedinLink(site.linkedin),
+              EmailLink(site.email),
+            ]}
+          />
+        </section>
 
-      <p className="font-press-start text-xs text-success">
-        <TypingText text="> retro design system" />
-      </p>
+        <section id="sobre" className="scroll-mt-24" aria-labelledby="sobre-heading">
+          <h2
+            id="sobre-heading"
+            className="mb-6 font-press-start text-sm text-primary retro-glow"
+          >
+            Sobre
+          </h2>
+          <div className="flex max-w-prose flex-col gap-4 text-sm leading-relaxed text-muted-foreground">
+            {site.about.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
 
-      <p className="max-w-md text-sm text-muted-foreground">
-        Sistema de design com estética retro game / neon: tipografia, botões,
-        cards, inputs, barras de progresso e efeitos animados.
-      </p>
+        <section id="xp" className="scroll-mt-24" aria-labelledby="xp-heading">
+          <h2
+            id="xp-heading"
+            className="mb-6 font-press-start text-sm text-primary retro-glow"
+          >
+            Quest log
+          </h2>
+          <RetroTimeline entries={timeline} />
+        </section>
 
-      <Button asChild variant="primary" size="lg">
-        <Link href="/design-system">View Design System</Link>
-      </Button>
-    </main>
+        <section id="cases" className="scroll-mt-24" aria-labelledby="cases-heading">
+          <h2
+            id="cases-heading"
+            className="mb-6 font-press-start text-sm text-primary retro-glow"
+          >
+            Cases
+          </h2>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {projects.map((project) => (
+              <Card key={project.id} variant={project.variant} className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-sm">{project.title}</CardTitle>
+                  <CardDescription>{project.org}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </p>
+                  <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Tecnologias">
+                    {project.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="pixel-corners border border-border px-1.5 py-0.5 font-press-start text-[0.45rem] text-muted-foreground [--pixel-step:1px]"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                {project.href ? (
+                  <CardFooter>
+                    <Button asChild variant="outline" size="sm">
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <LinkIcon width={24} height={24} aria-hidden />
+                        Abrir site
+                      </a>
+                    </Button>
+                  </CardFooter>
+                ) : null}
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="stack" className="scroll-mt-24" aria-labelledby="stack-heading">
+          <h2
+            id="stack-heading"
+            className="mb-6 font-press-start text-sm text-primary retro-glow"
+          >
+            Stack
+          </h2>
+          <RetroSlider items={techItems} />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {skills.map((skill) => (
+              <Progress
+                key={skill.label}
+                label={skill.label}
+                value={skill.value}
+                variant={skill.variant}
+                showValue
+              />
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="contato"
+          className="scroll-mt-24 pb-8"
+          aria-labelledby="contato-heading"
+        >
+          <h2
+            id="contato-heading"
+            className="mb-6 font-press-start text-sm text-primary retro-glow"
+          >
+            Contato
+          </h2>
+          <p className="mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground">
+            Recrutador, proposta ou papo técnico: email primeiro. LinkedIn e
+            GitHub abrem em outra aba.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild variant="primary" size="lg">
+              <a href={mailto}>
+                <Mail width={24} height={24} aria-hidden />
+                Conversar por email
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                Abrir LinkedIn
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <a href={site.github} target="_blank" rel="noopener noreferrer">
+                Abrir GitHub
+              </a>
+            </Button>
+          </div>
+          <p className="mt-4 text-sm text-muted-foreground">{site.email}</p>
+        </section>
+      </main>
+    </div>
   );
 }
