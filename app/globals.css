@@ -153,6 +153,21 @@
 html {
   background: var(--background);
   cursor: var(--cursor-arrow), auto;
+  /* Scrollbar pixel art — Webkit */
+  scrollbar-color: var(--primary) var(--card);
+  scrollbar-width: thin;
+}
+
+/* Default highlight: accent */
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Alternativa sorteada pelo SelectionRandomizer via data-sel */
+:root[data-sel="secondary"] ::selection {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
 body {
@@ -160,6 +175,40 @@ body {
   color: var(--foreground);
   font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   Scrollbar pixel art
+   Webkit: track + thumb quadrados (pixel-step grid)
+   Firefox: scrollbar-color/width no <html> acima.
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card);
+  border-left: 3px solid var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  /* borda cria o "pixel gap" entre thumb e track */
+  border: 3px solid var(--background);
+  /* sem border-radius = cantos quadrados = pixel art */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--accent);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--background);
 }
 
 *,
@@ -440,39 +489,62 @@ img,
    ============================================================ */
 .cursor-trail {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 9999;
   pointer-events: none;
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--primary);
+}
+
+.cursor-trail__sq {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  border: 1px solid;
   opacity: 0;
 }
 
-/* Mesmo mapa de contraste da mão pixelada sobre cada variante. */
-.cursor-trail[data-tone="primary"] {
-  border-color: var(--destructive);
+.cursor-trail__sq--lead {
+  width: 12px;
+  height: 12px;
+  border-color: var(--primary);
 }
-.cursor-trail[data-tone="secondary"] {
-  border-color: var(--warning);
-}
-.cursor-trail[data-tone="danger"],
-.cursor-trail[data-tone="warning"] {
+
+.cursor-trail__sq--sec {
+  width: 14px;
+  height: 14px;
   border-color: var(--secondary);
 }
-.cursor-trail[data-tone="success"] {
+
+.cursor-trail__sq--warn {
+  width: 16px;
+  height: 16px;
+  border-color: var(--warning);
+}
+
+/* Contraste no hover de botão — só o anel da frente. */
+.cursor-trail[data-tone="primary"] .cursor-trail__sq--lead {
+  border-color: var(--destructive);
+}
+.cursor-trail[data-tone="secondary"] .cursor-trail__sq--lead {
+  border-color: var(--warning);
+}
+.cursor-trail[data-tone="danger"] .cursor-trail__sq--lead,
+.cursor-trail[data-tone="warning"] .cursor-trail__sq--lead {
+  border-color: var(--secondary);
+}
+.cursor-trail[data-tone="success"] .cursor-trail__sq--lead {
   border-color: var(--cursor-ink);
 }
-.cursor-trail[data-tone="accent"],
-.cursor-trail[data-tone="outline"],
-.cursor-trail[data-tone="ghost"] {
+.cursor-trail[data-tone="accent"] .cursor-trail__sq--lead,
+.cursor-trail[data-tone="outline"] .cursor-trail__sq--lead,
+.cursor-trail[data-tone="ghost"] .cursor-trail__sq--lead {
   border-color: var(--primary);
 }
 
 /* Só pisca depois do primeiro movimento do ponteiro; sem isso a
    animação venceria o opacity inicial e o rastro apareceria parado. */
-.cursor-trail[data-ready="true"] {
+.cursor-trail[data-ready="true"] .cursor-trail__sq {
+  opacity: 0.9;
   animation: cursor-blink 1s steps(2, end) infinite;
 }
 
@@ -569,6 +641,7 @@ img,
   .neon-sign,
   .pulse-neon,
   .cursor-trail,
+  .cursor-trail__sq,
   .glitch-layer,
   .marquee-track {
     animation: none;

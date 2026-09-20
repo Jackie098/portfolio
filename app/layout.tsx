@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Orbitron, Press_Start_2P } from "next/font/google";
 
 import { RetroCursor } from "@/components/retro-cursor";
+import { SelectionRandomizer } from "@/components/selection-randomizer";
 import { SoundProvider } from "@/components/sound-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -42,6 +43,7 @@ export default function RootLayout({
           <SoundProvider>
             {children}
             <RetroCursor />
+            <SelectionRandomizer />
           </SoundProvider>
         </ThemeProvider>
       </body>
