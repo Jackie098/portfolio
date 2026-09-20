@@ -22,6 +22,7 @@ import {
   Zap,
 } from "pixelarticons/react";
 
+import { MusicPlayerWidget } from "@/components/music-player";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -166,6 +167,27 @@ export default function DesignSystemPage() {
           Design system inspirado em videogames clássicos.
         </p>
       </header>
+
+      {/* ── Music Player ── */}
+      <section className="mb-10">
+        <h2 className="mb-6 font-press-start text-sm text-primary retro-glow">
+          Music Player
+        </h2>
+        <Card variant="accent">
+          <CardHeader>
+            <CardTitle>BGM 8-bit</CardTitle>
+            <CardDescription>
+              Player global — play, seek, volume, shuffle e repeat. Widget abaixo
+              é a versão inline; o mesmo player flutua no canto da tela.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="relative">
+              <MusicPlayerWidget fixed={false} />
+            </div>
+          </CardContent>
+        </Card>
+      </section>
 
       <section className="mb-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card variant="danger">

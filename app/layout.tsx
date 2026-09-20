@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, Press_Start_2P } from "next/font/google";
 
+import { MusicPlayerWidget, MusicProvider } from "@/components/music-player";
 import { RetroCursor } from "@/components/retro-cursor";
 import { SelectionRandomizer } from "@/components/selection-randomizer";
 import { SoundProvider } from "@/components/sound-provider";
@@ -38,12 +39,15 @@ export default function RootLayout({
       className={`${pressStart2P.variable} ${orbitron.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-background font-orbitron text-foreground">
+      <body className="min-h-full bg-background pb-28 font-orbitron text-foreground">
         <ThemeProvider>
           <SoundProvider>
-            {children}
-            <RetroCursor />
-            <SelectionRandomizer />
+            <MusicProvider>
+              {children}
+              <RetroCursor />
+              <SelectionRandomizer />
+              <MusicPlayerWidget />
+            </MusicProvider>
           </SoundProvider>
         </ThemeProvider>
       </body>

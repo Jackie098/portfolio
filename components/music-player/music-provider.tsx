@@ -1,0 +1,409 @@
+"use client";
+
+import * as React from "react";
+
+import { TRACKS, type Track } from "@/components/music-player/tracks";
+import { useRetroSound } from "@/components/sound-provider";
+
+export type { Track };
+
+declare global {
+  interface Window {
+    __retroBgm?: HTMLAudioElement;
+  }
+}
+
+/** Um único elemento — Strict Mode / HMR não podem criar segunda faixa. */
+function getSharedAudio() {
+  if (window.__retroBgm) return window.__retroBgm;
+  const audio = new Audio();
+  audio.preload = "auto";
+  window.__retroBgm = audio;
+  return audio;
+}
+
+const STORAGE_KEY = "retro-music-prefs";
+
+export type RepeatMode = "none" | "one" | "all";
+
+type Prefs = {
+  currentIndex: number;
+  volume: number;
+  shuffle: boolean;
+  repeat: RepeatMode;
+};
+
+type MusicContextValue = {
+  tracks: Track[];
+  currentTrack: Track;
+  currentIndex: number;
+  playing: boolean;
+  progress: number;
+  currentTime: number;
+  duration: number;
+  volume: number;
+  shuffle: boolean;
+  repeat: RepeatMode;
+  play: () => void;
+  pause: () => void;
+  togglePlay: () => void;
+  next: () => void;
+  prev: () => void;
+  seek: (percent: number) => void;
+  setVolume: (value: number) => void;
+  toggleShuffle: () => void;
+  cycleRepeat: () => void;
+};
+
+const MusicContext = React.createContext<MusicContextValue | null>(null);
+
+const FALLBACK_TRACK: Track = {
+  id: "none",
+  src: "",
+  title: "—",
+};
+
+const SERVER_PREFS: Prefs = {
+  currentIndex: 0,
+  volume: 0.6,
+  shuffle: false,
+  repeat: "all",
+};
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function parsePrefs(raw: string | null): Prefs | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as Partial<Prefs>;
+    const currentIndex = clamp(Number(parsed.currentIndex) || 0, 0, TRACKS.length - 1);
+    const volume = clamp(Number(parsed.volume ?? 0.6), 0, 1);
+    const shuffle = Boolean(parsed.shuffle);
+    const repeat: RepeatMode =
+      parsed.repeat === "none" || parsed.repeat === "one" || parsed.repeat === "all"
+        ? parsed.repeat
+        : "all";
+    return { currentIndex, volume, shuffle, repeat };
+  } catch {
+    return null;
+  }
+}
+
+function pickRandom(except?: number) {
+  if (TRACKS.length <= 1) return 0;
+  let next = Math.floor(Math.random() * TRACKS.length);
+  while (next === except) {
+    next = Math.floor(Math.random() * TRACKS.length);
+  }
+  return next;
+}
+
+let listeners: Array<() => void> = [];
+
+function subscribe(onChange: () => void) {
+  listeners = [...listeners, onChange];
+  window.addEventListener("storage", onChange);
+  return () => {
+    listeners = listeners.filter((listener) => listener !== onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function emit() {
+  listeners.forEach((listener) => listener());
+}
+
+function getSnapshot(): string {
+  return window.localStorage.getItem(STORAGE_KEY) ?? JSON.stringify(SERVER_PREFS);
+}
+
+function getServerSnapshot(): string {
+  return JSON.stringify(SERVER_PREFS);
+}
+
+function writePrefs(prefs: Prefs) {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+  emit();
+}
+
+export function MusicProvider({ children }: { children: React.ReactNode }) {
+  const { enabled: soundEnabled, setEnabled: setSoundEnabled } = useRetroSound();
+  const raw = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const prefs = parsePrefs(raw) ?? SERVER_PREFS;
+
+  const indexRef = React.useRef(prefs.currentIndex);
+  const shuffleRef = React.useRef(prefs.shuffle);
+  const repeatRef = React.useRef(prefs.repeat);
+  const soundEnabledRef = React.useRef(soundEnabled);
+  const prevIndexRef = React.useRef<number | null>(null);
+  const applyIndexRef = React.useRef<(next: number, shouldPlay: boolean) => void>(
+    () => {},
+  );
+
+  const [playing, setPlaying] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const [duration, setDuration] = React.useState(0);
+
+  const persistPatch = React.useCallback(
+    (patch: Partial<Prefs>) => {
+      writePrefs({ ...prefs, ...patch });
+    },
+    [prefs],
+  );
+
+  const applyIndex = React.useCallback(
+    (next: number, shouldPlay: boolean) => {
+      const audio = getSharedAudio();
+      const clamped = clamp(next, 0, TRACKS.length - 1);
+      if (clamped !== indexRef.current) {
+        prevIndexRef.current = indexRef.current;
+      }
+      persistPatch({ currentIndex: clamped });
+      audio.pause();
+      audio.src = TRACKS[clamped].src;
+      audio.load();
+      if (shouldPlay && soundEnabledRef.current) {
+        void audio
+          .play()
+          .then(() => setPlaying(true))
+          .catch(() => setPlaying(false));
+      } else {
+        setPlaying(false);
+      }
+    },
+    [persistPatch],
+  );
+
+  React.useEffect(() => {
+    indexRef.current = prefs.currentIndex;
+    shuffleRef.current = prefs.shuffle;
+    repeatRef.current = prefs.repeat;
+  }, [prefs]);
+
+  React.useEffect(() => {
+    soundEnabledRef.current = soundEnabled;
+  }, [soundEnabled]);
+
+  React.useEffect(() => {
+    applyIndexRef.current = applyIndex;
+  }, [applyIndex]);
+
+  React.useEffect(() => {
+    const audio = getSharedAudio();
+    audio.pause();
+
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const start = parsePrefs(stored) ?? {
+      ...SERVER_PREFS,
+      currentIndex: pickRandom(),
+    };
+    if (!stored) writePrefs(start);
+
+    audio.volume = start.volume;
+    if (audio.src === "" || !audio.src.endsWith(TRACKS[start.currentIndex].src)) {
+      audio.src = TRACKS[start.currentIndex].src;
+    }
+
+    const onTime = () => {
+      const dur = audio.duration;
+      if (!dur || Number.isNaN(dur)) {
+        setProgress(0);
+        setCurrentTime(audio.currentTime);
+        setDuration(0);
+        return;
+      }
+      setCurrentTime(audio.currentTime);
+      setDuration(dur);
+      setProgress((audio.currentTime / dur) * 100);
+    };
+
+    const onEnded = () => {
+      if (repeatRef.current === "one") {
+        audio.currentTime = 0;
+        if (soundEnabledRef.current) {
+          void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+        }
+        return;
+      }
+      if (repeatRef.current === "none") {
+        setPlaying(false);
+        return;
+      }
+      if (shuffleRef.current) {
+        applyIndexRef.current(pickRandom(indexRef.current), true);
+        return;
+      }
+      applyIndexRef.current((indexRef.current + 1) % TRACKS.length, true);
+    };
+
+    const onPlay = () => setPlaying(true);
+    const onPause = () => setPlaying(false);
+
+    audio.addEventListener("timeupdate", onTime);
+    audio.addEventListener("loadedmetadata", onTime);
+    audio.addEventListener("ended", onEnded);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+
+    return () => {
+      audio.removeEventListener("timeupdate", onTime);
+      audio.removeEventListener("loadedmetadata", onTime);
+      audio.removeEventListener("ended", onEnded);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.pause();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const audio = getSharedAudio();
+    audio.volume = prefs.volume;
+  }, [prefs.volume]);
+
+  React.useEffect(() => {
+    const audio = getSharedAudio();
+    audio.muted = !soundEnabled;
+    if (!soundEnabled) {
+      audio.pause();
+      return;
+    }
+    void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [soundEnabled]);
+
+  const play = React.useCallback(() => {
+    if (!soundEnabledRef.current) setSoundEnabled(true);
+    const audio = getSharedAudio();
+    audio.muted = false;
+    void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [setSoundEnabled]);
+
+  const pause = React.useCallback(() => {
+    getSharedAudio().pause();
+    setPlaying(false);
+  }, []);
+
+  const togglePlay = React.useCallback(() => {
+    const audio = getSharedAudio();
+    if (audio.paused) play();
+    else pause();
+  }, [play, pause]);
+
+  const next = React.useCallback(() => {
+    if (shuffleRef.current) {
+      applyIndex(pickRandom(indexRef.current), true);
+      return;
+    }
+    applyIndex((indexRef.current + 1) % TRACKS.length, true);
+  }, [applyIndex]);
+
+  const prev = React.useCallback(() => {
+    const audio = getSharedAudio();
+    if (audio.currentTime > 3) {
+      audio.currentTime = 0;
+      return;
+    }
+    if (shuffleRef.current && prevIndexRef.current != null) {
+      applyIndex(prevIndexRef.current, true);
+      prevIndexRef.current = null;
+      return;
+    }
+    const upcoming = indexRef.current - 1;
+    applyIndex(upcoming < 0 ? TRACKS.length - 1 : upcoming, true);
+  }, [applyIndex]);
+
+  const seek = React.useCallback((percent: number) => {
+    const audio = getSharedAudio();
+    if (!audio.duration || Number.isNaN(audio.duration)) return;
+    audio.currentTime = (clamp(percent, 0, 100) / 100) * audio.duration;
+  }, []);
+
+  const setVolume = React.useCallback(
+    (value: number) => {
+      const nextVolume = clamp(value, 0, 1);
+      getSharedAudio().volume = nextVolume;
+      persistPatch({ volume: nextVolume });
+    },
+    [persistPatch],
+  );
+
+  const toggleShuffle = React.useCallback(() => {
+    persistPatch({ shuffle: !shuffleRef.current });
+  }, [persistPatch]);
+
+  const cycleRepeat = React.useCallback(() => {
+    const order: RepeatMode[] = ["none", "all", "one"];
+    const nextMode = order[(order.indexOf(repeatRef.current) + 1) % order.length];
+    persistPatch({ repeat: nextMode });
+  }, [persistPatch]);
+
+  const value = React.useMemo<MusicContextValue>(
+    () => ({
+      tracks: TRACKS,
+      currentTrack: TRACKS[prefs.currentIndex] ?? FALLBACK_TRACK,
+      currentIndex: prefs.currentIndex,
+      playing,
+      progress,
+      currentTime,
+      duration,
+      volume: prefs.volume,
+      shuffle: prefs.shuffle,
+      repeat: prefs.repeat,
+      play,
+      pause,
+      togglePlay,
+      next,
+      prev,
+      seek,
+      setVolume,
+      toggleShuffle,
+      cycleRepeat,
+    }),
+    [
+      prefs,
+      playing,
+      progress,
+      currentTime,
+      duration,
+      play,
+      pause,
+      togglePlay,
+      next,
+      prev,
+      seek,
+      setVolume,
+      toggleShuffle,
+      cycleRepeat,
+    ],
+  );
+
+  return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>;
+}
+
+export function useMusicPlayer(): MusicContextValue {
+  return (
+    React.useContext(MusicContext) ?? {
+      tracks: TRACKS,
+      currentTrack: FALLBACK_TRACK,
+      currentIndex: 0,
+      playing: false,
+      progress: 0,
+      currentTime: 0,
+      duration: 0,
+      volume: 0.6,
+      shuffle: false,
+      repeat: "all",
+      play: () => {},
+      pause: () => {},
+      togglePlay: () => {},
+      next: () => {},
+      prev: () => {},
+      seek: () => {},
+      setVolume: () => {},
+      toggleShuffle: () => {},
+      cycleRepeat: () => {},
+    }
+  );
+}
