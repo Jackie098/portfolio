@@ -17,6 +17,11 @@ Criar assets visuais do mesmo personagem do portfolio, mantendo consistência co
 - Cena codando no notebook, versão sem frame: `public/carlos-pixel-avatar-coding-laptop-no-frame.png` (`/carlos-pixel-avatar-coding-laptop-no-frame.png` no app)
 - Cena codando no notebook, versão recomendada para hero com frame justo: `public/carlos-pixel-avatar-coding-laptop-tight-frame.png` (`/carlos-pixel-avatar-coding-laptop-tight-frame.png` no app)
 - Variação Player Dossier / Tech Mage: `public/carlos-pixel-avatar-tech-mage.png` (`/carlos-pixel-avatar-tech-mage.png` no app)
+- Variação tema claro / irritado com texto: `public/carlos-pixel-avatar-odeio-luz.png` (`/carlos-pixel-avatar-odeio-luz.png` no app)
+- Variação tema claro / irritado codando: `public/carlos-pixel-avatar-coding-odeio-luz.png` (`/carlos-pixel-avatar-coding-odeio-luz.png` no app)
+- Variação tema claro / cansado codando: `public/carlos-pixel-avatar-coding-desliga-isso.png` (`/carlos-pixel-avatar-coding-desliga-isso.png` no app)
+- Variação tema claro / inexpressivo com olheiras: `public/carlos-pixel-avatar-coding-desliga-isso-deadpan.png` (`/carlos-pixel-avatar-coding-desliga-isso-deadpan.png` no app)
+- Variação tema claro / inexpressivo com frame justo: `public/carlos-pixel-avatar-coding-desliga-isso-deadpan-tight-frame.png` (`/carlos-pixel-avatar-coding-desliga-isso-deadpan-tight-frame.png` no app)
 - Foto original do rosto, se disponível na conversa, serve apenas para identidade facial. O avatar canônico manda no estilo.
 - Foto do notebook, se disponível na conversa, serve para cenas codando.
 - Não use caminhos internos de sessão do Cursor como referência canônica; copie assets aprovados para `public/`.
@@ -81,13 +86,21 @@ Create a full-body front-facing sprite of the same character. Standing pose, rel
 Create the same character coding on a black gaming laptop. If a laptop photo is provided, use it as secondary reference for the black angular laptop, sticker-like details, and cyan glow. Character is seated, hands on keyboard, screen glow lighting the face, focused slight smile. No readable text or real logos.
 ```
 
-Para uso no hero, mantenha o frame neon cyan, mas ele deve ser o limite visual da imagem: sem margem, padding ou faixa escura fora da moldura. O conteúdo fica dentro do frame; o glow do notebook e da silhueta pode sobressair dentro da composição sem criar segunda borda externa.
+Para uso no hero, mantenha o frame neon cyan, mas ele deve ser o limite visual da imagem: sem margem, padding ou faixa escura fora da moldura. O conteúdo fica dentro do frame; o glow do notebook e da silhueta pode sobressair dentro da composição sem criar segunda borda externa. No tema claro, use só o frame cyan — sem pixels roxos/magenta nos cantos.
 
 ### Player Dossier / Tech Mage
 
 ```text
 Create the same character as a retro RPG tech developer: standing in a slight 3/4 pose, holding a small notebook or pixel terminal, surrounded by subtle abstract code blocks and neon particles. Professional, creative, no weapons, no fantasy excess.
 ```
+
+### Tema Claro / Odeio Luz
+
+```text
+Create the same character in a light theme profile-card avatar. Expression is annoyed/upset, eyebrows furrowed, eyes narrowed, frown or grimace. Background is clean light gray/off-white. Black shirt with readable pixel text: "Odeio luz". Keep cyan accents adapted to light theme.
+```
+
+Para manter o contexto do hero, use variação codando: personagem sentado no notebook, rosto olhando para o usuário, camiseta legível. Para feição 😑, use rosto inexpressivo/deadpan, olhos retos ou semicerrados, olheiras visíveis, boca neutra e texto "Desliga isso". Hero light usa a versão `deadpan-tight-frame`.
 
 ## Checklist Antes De Gerar
 
