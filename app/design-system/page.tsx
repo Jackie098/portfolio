@@ -175,10 +175,11 @@ export default function DesignSystemPage() {
         </h2>
         <Card variant="accent">
           <CardHeader>
-            <CardTitle>BGM 8-bit</CardTitle>
+            <CardTitle>BGM lo-fi</CardTitle>
             <CardDescription>
-              Player global — play, seek, volume, shuffle e repeat. Widget abaixo
-              é a versão inline; o mesmo player flutua no canto da tela.
+              Loops originais, lentos — play, seek, volume, shuffle e repeat.
+              Widget abaixo é a versão inline; o mesmo player flutua no canto
+              da tela.
             </CardDescription>
           </CardHeader>
           <CardContent>

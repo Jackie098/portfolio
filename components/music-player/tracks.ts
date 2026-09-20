@@ -4,13 +4,13 @@ export type Track = {
   title: string;
 };
 
-/** Loops 8-bit originais (scripts/generate-chiptune.py) — não são transcrições Nintendo. */
+/** Loops lo-fi originais (scripts/generate-lofi.py). */
 export const TRACKS: Track[] = [
-  { id: "overworld", src: "/music/overworld.mp3", title: "Overworld Theme" },
-  { id: "underground", src: "/music/underground.mp3", title: "Underground Theme" },
-  { id: "starman", src: "/music/starman.mp3", title: "Starman (Invincibility)" },
-  { id: "castle", src: "/music/castle.mp3", title: "Castle Theme" },
-  { id: "water", src: "/music/water.mp3", title: "Water (Underwater) Theme" },
-  { id: "athletic", src: "/music/athletic.mp3", title: "Athletic Theme (SMW)" },
-  { id: "game-over", src: "/music/game-over.mp3", title: "Game Over" },
+  { id: "midnight-rain", src: "/music/midnight-rain.mp3", title: "Midnight Rain" },
+  { id: "study-lamp", src: "/music/study-lamp.mp3", title: "Study Lamp" },
+  { id: "tape-warmth", src: "/music/tape-warmth.mp3", title: "Tape Warmth" },
+  { id: "dusty-groove", src: "/music/dusty-groove.mp3", title: "Dusty Groove" },
+  { id: "late-tram", src: "/music/late-tram.mp3", title: "Late Tram" },
+  { id: "amber-hours", src: "/music/amber-hours.mp3", title: "Amber Hours" },
+  { id: "empty-cafe", src: "/music/empty-cafe.mp3", title: "Empty Café" },
 ];
