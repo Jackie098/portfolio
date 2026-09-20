@@ -13,6 +13,8 @@ export const site = {
   cvFilename: "CV_Carlos_Augusto.pdf",
   avatar: "/carlos-pixel-profile-avatar.png",
   heroCodingAvatar: "/carlos-pixel-avatar-coding-laptop-tight-frame.png",
+  heroCodingAvatarLight:
+    "/carlos-pixel-avatar-coding-desliga-isso-deadpan-tight-frame.png",
   pitch:
     "Desenvolvo produtos e sistemas sob medida, com foco em performance, clareza e resultado para o negócio.",
   playerBio:

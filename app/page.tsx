@@ -14,6 +14,7 @@ import {
   Server,
 } from "pixelarticons/react";
 
+import { HeroCodingAvatar } from "@/components/hero-coding-avatar";
 import { PlayerDossier } from "@/components/player-dossier";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -136,25 +137,7 @@ export default function HomePage() {
                 </Button>
               </div>
             </div>
-            <figure
-              className="relative mx-auto w-full max-w-sm overflow-hidden md:mx-0 md:max-w-none filter-[drop-shadow(0_0_18px_color-mix(in_srgb,var(--primary)_35%,transparent))]"
-              style={{ aspectRatio: "1004 / 1000" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={site.heroCodingAvatar}
-                alt={`${site.name} em pixel art, codando no notebook`}
-                width={1024}
-                height={1024}
-                className="absolute max-w-none"
-                style={{
-                  width: "calc(1024 / 1004 * 100%)",
-                  height: "calc(1024 / 1000 * 100%)",
-                  left: "calc(-10 / 1004 * 100%)",
-                  top: "calc(-14 / 1000 * 100%)",
-                }}
-              />
-            </figure>
+            <HeroCodingAvatar />
           </div>
         </section>
 
