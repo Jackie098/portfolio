@@ -35,6 +35,7 @@ export function RetroCursor() {
     const current = { x: 0, y: 0 };
     let frame = 0;
     let hovering = false;
+    let tone = "";
 
     let seen = false;
 
@@ -48,9 +49,16 @@ export function RetroCursor() {
       }
       target.x = event.clientX;
       target.y = event.clientY;
-      hovering = Boolean(
-        (event.target as Element | null)?.closest?.(INTERACTIVE),
-      );
+      const raw = event.target;
+      const hoverEl =
+        raw instanceof Element ? raw.closest(INTERACTIVE) : null;
+      hovering = Boolean(hoverEl);
+      tone =
+        hoverEl instanceof Element
+          ? (hoverEl.closest("[data-cursor-trail]")?.getAttribute(
+              "data-cursor-trail",
+            ) ?? "")
+          : "";
     };
 
     const tick = () => {
@@ -60,6 +68,8 @@ export function RetroCursor() {
       const node = ref.current;
       if (node) {
         const scale = hovering ? 1.6 : 1;
+        if (tone) node.dataset.tone = tone;
+        else delete node.dataset.tone;
         node.style.transform = `translate3d(${Math.round(current.x) - 6}px, ${
           Math.round(current.y) - 6
         }px, 0) scale(${scale})`;

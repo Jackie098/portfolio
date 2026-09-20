@@ -13,21 +13,21 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "[--pixel-accent:var(--primary)] border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
+          "[--pixel-accent:var(--primary)] [--cursor-hand:var(--cursor-pointer-danger)] border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
         secondary:
-          "[--pixel-accent:var(--secondary)] border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-secondary-foreground",
+          "[--pixel-accent:var(--secondary)] [--cursor-hand:var(--cursor-pointer-warning)] border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-secondary-foreground",
         accent:
-          "[--pixel-accent:var(--accent)] border-accent bg-transparent text-accent hover:bg-accent hover:text-accent-foreground",
+          "[--pixel-accent:var(--accent)] [--cursor-hand:var(--cursor-pointer)] border-accent bg-transparent text-accent hover:bg-accent hover:text-accent-foreground",
         danger:
-          "[--pixel-accent:var(--destructive)] border-destructive bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground",
+          "[--pixel-accent:var(--destructive)] [--cursor-hand:var(--cursor-pointer-secondary)] border-destructive bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground",
         warning:
-          "[--pixel-accent:var(--warning)] border-warning bg-transparent text-warning hover:bg-warning hover:text-warning-foreground",
+          "[--pixel-accent:var(--warning)] [--cursor-hand:var(--cursor-pointer-secondary)] border-warning bg-transparent text-warning hover:bg-warning hover:text-warning-foreground",
         success:
-          "[--pixel-accent:var(--success)] border-success bg-transparent text-success hover:bg-success hover:text-success-foreground",
+          "[--pixel-accent:var(--success)] [--cursor-hand:var(--cursor-pointer-ink)] border-success bg-transparent text-success hover:bg-success hover:text-success-foreground",
         outline:
-          "[--pixel-accent:var(--border)] border-border bg-transparent text-foreground hover:border-primary hover:text-primary",
+          "[--pixel-accent:var(--border)] [--cursor-hand:var(--cursor-pointer)] border-border bg-transparent text-foreground hover:border-primary hover:text-primary",
         ghost:
-          "[--pixel-accent:transparent] border-transparent bg-transparent text-foreground hover:text-primary",
+          "[--pixel-accent:transparent] [--cursor-hand:var(--cursor-pointer)] border-transparent bg-transparent text-foreground hover:text-primary",
       },
       size: {
         sm: "h-9 px-3 text-[0.5rem] [&_svg]:size-3",
@@ -66,6 +66,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
+      data-cursor-trail={variant ?? "primary"}
       className={cn(buttonVariants({ variant, size, className }))}
       onPointerEnter={(event: React.PointerEvent<HTMLButtonElement>) => {
         // Toque não tem hover: evita disparar o blip de navegação.
