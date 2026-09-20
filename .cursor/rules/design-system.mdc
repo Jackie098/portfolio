@@ -1,0 +1,43 @@
+---
+description: Design system retro-game — tokens, componentes e convenções de UI
+globs: components/**/*.tsx,app/**/*.tsx,app/globals.css
+alwaysApply: false
+---
+
+# Design System (Retro Game / Neon)
+
+Ao criar ou editar UI, use o design system do projeto. Não reinvente estilos.
+
+## Tokens — sempre via CSS variables / Tailwind
+
+- Cores **apenas** por semantic tokens (`bg-primary`, `text-foreground`, `border-border`, `bg-destructive`...). Definidos em `app/globals.css` (`@theme`, Tailwind v4). Suporta dark (padrão neon) + light.
+- **Proibido hex hardcoded** em componentes (`#00D3F2`, `style={{ color: '#...' }}`). Adicione/reutilize token no `globals.css`.
+- Fontes: `.font-press-start` (headings/botões/labels curtos) e `.font-orbitron` (corpo). Nunca corpo longo em Press Start 2P.
+- Espaçamento: escala Tailwind base 4px (4/8/12/16/24/32/48/64).
+
+```tsx
+// ❌ BAD
+<div style={{ background: "#1F2937", color: "#00D3F2" }}>...</div>
+// ✅ GOOD
+<div className="bg-card text-primary">...</div>
+```
+
+## Componentes
+
+- Reutilize `components/ui/*` (`Button`, `Card`, `Input`, `Progress`). Não recrie primitivos.
+- Sempre `cn()` de `@/lib/utils` para compor classes; nunca concatenar strings.
+- Variantes via **CVA** (`variant`, `size`). Encaminhe `ref` e `...props`.
+- Server Component por padrão; `"use client"` só com estado/interatividade.
+
+```tsx
+// ✅ GOOD
+import { cn } from "@/lib/utils"
+<Button variant="primary" size="lg" className={cn(extra)} />
+```
+
+## Qualidade
+
+- Estados obrigatórios: `hover`, `active`, `focus-visible` (ring neon visível), `disabled`.
+- Acessibilidade: label associado a input, `aria-invalid`/`aria-describedby`, `role="progressbar"` com `aria-valuenow/min/max`, contraste AA nos dois temas.
+- Mobile-first (referências são telas de iPhone). TS estrito, sem `any`.
+- Não instalar libs novas sem confirmar; usar as já presentes em `package.json`.

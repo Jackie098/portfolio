@@ -1,0 +1,49 @@
+---
+description: Uso correto da biblioteca de ícones pixelarticons (plano free)
+globs: components/**/*.tsx,app/**/*.tsx
+alwaysApply: false
+---
+
+# Ícones — pixelarticons (plano free)
+
+`pixelarticons` é a única biblioteca de ícones do projeto. `lucide-react` foi removida; não reintroduza.
+
+## Como importar
+
+```tsx
+// ✅ GOOD — named import do entrypoint react
+import { Heart, Sun } from "pixelarticons/react"
+
+// ❌ BAD — raiz do pacote (não exporta componentes React)
+import { Heart } from "pixelarticons"
+```
+
+## Regras de renderização
+
+- Tamanho **múltiplo de 24** (12, 24, 48, 72, 96). Fora disso os pixels borram.
+  Passe `width`/`height` explícitos; classes de tamanho do Tailwind sozinhas não mudam o `viewBox`.
+- Ícones usam `fill="currentColor"` → cor vem do texto. Use `text-primary`, nunca `fill="#..."`.
+- **Nunca** edite o `d` do path nem o `viewBox`.
+- Ícone decorativo ao lado de texto: `aria-hidden`. Ícone sozinho em botão: `aria-label` no botão.
+
+```tsx
+// ✅ GOOD
+<Button size="icon" aria-label="Ativar sons">
+  <Volume3 width={24} height={24} aria-hidden />
+</Button>
+```
+
+## Licença — só o conjunto free
+
+O projeto **não** tem licença Pro. Só os 639 nomes free (MIT) podem ser usados.
+
+**Verificação (local, sem rede):** o pacote npm instalado contém *apenas* o conjunto free.
+Se o componente existe, é free:
+
+```bash
+ls node_modules/pixelarticons/react/ | grep -i '^Nome'
+```
+
+Se não existir, é Pro: escolha alternativa free ou avise o usuário
+(`https://pixelarticons.com/icon/<nome>/`). Nunca copie path data de ícone Pro
+nem rode `npx pixelarticons upgrade` (exige chave de licença).

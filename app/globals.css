@@ -1,0 +1,519 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Brand tokens — Neon (fixos nos dois temas)
+   ============================================================ */
+:root {
+  --neon-blue: #00d3f2;
+  --neon-purple: #8e51ff;
+  --neon-pink: #ff0080;
+  --neon-red: #ff0040;
+  --neon-yellow: #ffff00;
+  --neon-green: #00ff41;
+
+  --radius: 0.125rem; /* cantos pixelados */
+  --pixel-step: 3px; /* tamanho do "pixel" dos cantos chanfrados */
+
+  /* Cursores pixel art (pixelarticons: cursor-minimal / pointer).
+     Data URI não aceita var(), por isso a cor é resolvida por tema aqui. */
+  --cursor-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23111827'%3E%3Cpath d='M6 4h2v16H6zm2 0h2v2H8zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm-8 6h2v2H8zm2-2h2v2h-2zm2-2h6v2h-6z'/%3E%3C/svg%3E")
+    6 4;
+  --cursor-hand: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%230891b2'%3E%3Cpath d='M17 9h2v3h-2zm-4-2h2v4h-2zM9 3h2v8H9zM5 3h2v10H5zm14 6h2v2h-2zm-4-2h2v2h-2zm-4 0h2v2h-2zM7 1h2v2H7zM3 11h2v2H3zm-2 2h2v2H1zm0 2h2v2H1zm2 2h2v2H3zm2 2h2v2H5zm2 2h12v2H7zm12-2h2v2h-2zm2-8h2v8h-2zM5 13h2v2H5zm2 2h2v2H7z'/%3E%3C/svg%3E")
+    8 2;
+
+  /* ---------- LIGHT (neons rebaixados p/ contraste AA) ---------- */
+  --background: #f3f4f6;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #0891b2;
+  --primary-foreground: #ffffff;
+  --secondary: #7c3aed;
+  --secondary-foreground: #ffffff;
+  --accent: #db2777;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --warning: #a16207;
+  --warning-foreground: #ffffff;
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+
+  --muted: #e5e7eb;
+  --muted-foreground: #4b5563;
+  --border: #d1d5db;
+  --input: #d1d5db;
+  --ring: #0891b2;
+}
+
+/* ---------- DARK (neon puro — tema padrão) ---------- */
+.dark {
+  --background: #111827;
+  --foreground: #f3f4f6;
+  --card: #1f2937;
+  --card-foreground: #f3f4f6;
+  --popover: #1f2937;
+  --popover-foreground: #f3f4f6;
+
+  --primary: #00d3f2;
+  --primary-foreground: #06131a;
+  --secondary: #8e51ff;
+  --secondary-foreground: #ffffff;
+  --accent: #ff0080;
+  --accent-foreground: #ffffff;
+  --destructive: #ff0040;
+  --destructive-foreground: #ffffff;
+  --warning: #ffff00;
+  --warning-foreground: #111827;
+  --success: #00ff41;
+  --success-foreground: #05200f;
+
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --border: #4b5563;
+  --input: #4b5563;
+  --ring: #00d3f2;
+
+  --cursor-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23f3f4f6'%3E%3Cpath d='M6 4h2v16H6zm2 0h2v2H8zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm-8 6h2v2H8zm2-2h2v2h-2zm2-2h6v2h-6z'/%3E%3C/svg%3E")
+    6 4;
+  --cursor-hand: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2300d3f2'%3E%3Cpath d='M17 9h2v3h-2zm-4-2h2v4h-2zM9 3h2v8H9zM5 3h2v10H5zm14 6h2v2h-2zm-4-2h2v2h-2zm-4 0h2v2h-2zM7 1h2v2H7zM3 11h2v2H3zm-2 2h2v2H1zm0 2h2v2H1zm2 2h2v2H3zm2 2h2v2H5zm2 2h12v2H7zm12-2h2v2h-2zm2-8h2v8h-2zM5 13h2v2H5zm2 2h2v2H7z'/%3E%3C/svg%3E")
+    8 2;
+}
+
+/* ============================================================
+   Tailwind theme mapping (v4)
+   ============================================================ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-press-start: var(--font-press-start-2p);
+  --font-orbitron: var(--font-orbitron);
+
+  --radius-sm: calc(var(--radius));
+  --radius-md: calc(var(--radius) * 2);
+  --radius-lg: calc(var(--radius) * 3);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  background: var(--background);
+  cursor: var(--cursor-arrow), auto;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
+}
+
+*,
+::after,
+::before {
+  border-color: var(--border);
+}
+
+:focus-visible {
+  outline: none;
+}
+
+/* ============================================================
+   Cursor retro — nunca sobrepõe affordances nativas
+   ============================================================ */
+a,
+button,
+summary,
+select,
+[role="button"],
+label[for] {
+  cursor: var(--cursor-hand), pointer;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* Ponteiro grosso (touch/caneta) volta ao cursor do sistema */
+@media (pointer: coarse) {
+  html,
+  a,
+  button,
+  summary,
+  select,
+  [role="button"],
+  label[for] {
+    cursor: auto;
+  }
+}
+
+img,
+[data-pixelated] {
+  image-rendering: pixelated;
+}
+
+/* ============================================================
+   Cantos pixelados (chanfro em degraus de --pixel-step)
+   Recorta o elemento; por isso sombras externas usam
+   filter: drop-shadow() (aplicado após o clip) e o anel de
+   foco é inset, para nunca sumir.
+   ============================================================ */
+.pixel-corners {
+  --p: var(--pixel-step);
+  clip-path: polygon(
+    0 calc(var(--p) * 2),
+    var(--p) calc(var(--p) * 2),
+    var(--p) var(--p),
+    calc(var(--p) * 2) var(--p),
+    calc(var(--p) * 2) 0,
+    calc(100% - var(--p) * 2) 0,
+    calc(100% - var(--p) * 2) var(--p),
+    calc(100% - var(--p)) var(--p),
+    calc(100% - var(--p)) calc(var(--p) * 2),
+    100% calc(var(--p) * 2),
+    100% calc(100% - var(--p) * 2),
+    calc(100% - var(--p)) calc(100% - var(--p) * 2),
+    calc(100% - var(--p)) calc(100% - var(--p)),
+    calc(100% - var(--p) * 2) calc(100% - var(--p)),
+    calc(100% - var(--p) * 2) 100%,
+    calc(var(--p) * 2) 100%,
+    calc(var(--p) * 2) calc(100% - var(--p)),
+    var(--p) calc(100% - var(--p)),
+    var(--p) calc(100% - var(--p) * 2),
+    0 calc(100% - var(--p) * 2)
+  );
+}
+
+/* ============================================================
+   Botão pixel — levanta no hover/focus, afunda no active
+   ============================================================ */
+.pixel-btn {
+  --pixel-accent: currentColor;
+  transition:
+    transform 120ms steps(3, end),
+    filter 120ms steps(3, end);
+  filter: drop-shadow(
+    3px 3px 0 color-mix(in srgb, var(--pixel-accent) 20%, transparent)
+  );
+}
+
+.pixel-btn:hover:not(:disabled),
+.pixel-btn:focus-visible:not(:disabled) {
+  transform: translateY(-2px);
+  filter: drop-shadow(
+      5px 5px 0 color-mix(in srgb, var(--pixel-accent) 20%, transparent)
+    )
+    drop-shadow(0 0 10px color-mix(in srgb, var(--pixel-accent) 65%, transparent));
+}
+
+.pixel-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.pixel-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--ring);
+}
+
+.pixel-btn:disabled,
+.pixel-btn[aria-disabled="true"] {
+  transform: none;
+  filter: none;
+}
+
+/* ============================================================
+   Campo pixel — foco inset (o clip-path recorta anel externo)
+   ============================================================ */
+.pixel-field:focus-visible,
+.pixel-field:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ring);
+}
+
+/* ============================================================
+   Texto "digitando" — o texto completo permanece no DOM;
+   apenas uma máscara é animada, então leitores de tela leem tudo.
+   ============================================================ */
+.typing {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing-reveal var(--typing-duration, 2s)
+    steps(var(--typing-steps, 20), end) both;
+}
+
+@keyframes typing-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ============================================================
+   Glitch — as camadas coloridas são spans reais com aria-hidden,
+   não conteúdo gerado por CSS (que vários leitores de tela leem).
+   Cadência lenta de propósito: nada perto de 3 flashes/s.
+   ============================================================ */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.glitch-layer-a {
+  color: var(--neon-pink);
+  clip-path: inset(0 0 58% 0);
+  animation: glitch-top 3.2s steps(2, end) infinite;
+}
+
+.glitch-layer-b {
+  color: var(--neon-blue);
+  clip-path: inset(58% 0 0 0);
+  animation: glitch-bottom 2.7s steps(2, end) infinite;
+}
+
+@keyframes glitch-top {
+  0%,
+  88%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  90% {
+    transform: translate(-2px, -1px);
+    opacity: 0.85;
+  }
+  94% {
+    transform: translate(2px, 1px);
+    opacity: 0.85;
+  }
+}
+
+@keyframes glitch-bottom {
+  0%,
+  86%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  89% {
+    transform: translate(2px, 1px);
+    opacity: 0.85;
+  }
+  93% {
+    transform: translate(-2px, -1px);
+    opacity: 0.85;
+  }
+}
+
+/* ============================================================
+   Neon sign — glow com flicker esporádico
+   ============================================================ */
+.neon-sign {
+  text-shadow:
+    0 0 4px color-mix(in srgb, currentColor 70%, transparent),
+    0 0 12px color-mix(in srgb, currentColor 45%, transparent),
+    0 0 24px color-mix(in srgb, currentColor 25%, transparent);
+  animation: neon-flicker 7s steps(1, end) infinite;
+}
+
+@keyframes neon-flicker {
+  0%,
+  91%,
+  93%,
+  96%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.45;
+  }
+  95% {
+    opacity: 0.6;
+  }
+}
+
+/* ============================================================
+   Pulse
+   ============================================================ */
+.pulse-neon {
+  animation: pulse-neon 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-neon {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.78;
+  }
+}
+
+/* ============================================================
+   Spinner — rotação em passos discretos (pixel art não gira suave)
+   ============================================================ */
+.spin-steps {
+  animation: spin-steps 800ms steps(8, end) infinite;
+}
+
+@keyframes spin-steps {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   Cursor decorativo que segue o ponteiro
+   ============================================================ */
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--primary);
+  opacity: 0;
+}
+
+/* Só pisca depois do primeiro movimento do ponteiro; sem isso a
+   animação venceria o opacity inicial e o rastro apareceria parado. */
+.cursor-trail[data-ready="true"] {
+  animation: cursor-blink 1s steps(2, end) infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ============================================================
+   Utilitários tipográficos
+   ============================================================ */
+.font-press-start {
+  font-family: var(--font-press-start-2p), monospace;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.font-orbitron {
+  font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ============================================================
+   Efeitos de texto
+   ============================================================ */
+.retro-glow {
+  text-shadow:
+    0 0 4px color-mix(in srgb, currentColor 70%, transparent),
+    0 0 12px color-mix(in srgb, currentColor 45%, transparent),
+    0 0 24px color-mix(in srgb, currentColor 25%, transparent);
+}
+
+.terminal-cursor::after {
+  content: "_";
+  margin-left: 0.15em;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Redução de movimento — todo efeito animado cai para o
+   estado final legível. Glow permanece (não é movimento).
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor::after,
+  .neon-sign,
+  .pulse-neon,
+  .cursor-trail,
+  .glitch-layer {
+    animation: none;
+  }
+
+  .glitch-layer {
+    opacity: 0;
+  }
+
+  .typing {
+    animation: none;
+    clip-path: none;
+  }
+
+  .spin-steps {
+    animation-duration: 2.4s;
+  }
+
+  .pixel-btn {
+    transition: none;
+  }
+
+  .pixel-btn:hover:not(:disabled),
+  .pixel-btn:focus-visible:not(:disabled),
+  .pixel-btn:active:not(:disabled) {
+    transform: none;
+  }
+}
