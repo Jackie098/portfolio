@@ -49,7 +49,7 @@ export default function RootLayout({
               <div className="relative z-10">{children}</div>
               <RetroCursor />
               <SelectionRandomizer />
-              <MusicPlayerWidget />
+              <MusicPlayerWidget className="max-md:hidden" />
             </MusicProvider>
           </SoundProvider>
         </ThemeProvider>

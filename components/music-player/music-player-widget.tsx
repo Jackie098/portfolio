@@ -67,11 +67,14 @@ function VolumeIcon({ volume }: { volume: number }) {
 
 type MusicPlayerWidgetProps = {
   fixed?: boolean;
+  /** No header mobile: recolhido na linha; expandido vira painel sem estourar a largura. */
+  dock?: boolean;
   className?: string;
 };
 
 export function MusicPlayerWidget({
   fixed = true,
+  dock = false,
   className,
 }: MusicPlayerWidgetProps) {
   const {
@@ -136,41 +139,8 @@ export function MusicPlayerWidget({
         ? "Repetir lista"
         : "Não repetir";
 
-  return (
-    <Card
-      variant="accent"
-      className={cn(
-        "gap-3 p-3",
-        fixed && "fixed right-4 bottom-4 z-50",
-        expanded ? "w-72" : "w-auto",
-        className,
-      )}
-    >
-      <CardHeader className="p-0">
-        <div className="flex items-center gap-2">
-          <Music width={24} height={24} className="shrink-0 text-accent" aria-hidden />
-          <p className="min-w-0 flex-1 truncate font-press-start text-[0.5rem] leading-relaxed text-foreground uppercase">
-            {currentTrack.title}
-          </p>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-expanded={expanded}
-            aria-label={expanded ? "Recolher player" : "Expandir player"}
-            onClick={toggleExpanded}
-          >
-            {expanded ? (
-              <ChevronLeft width={24} height={24} className="rotate-90" aria-hidden />
-            ) : (
-              <ChevronRight width={24} height={24} className="rotate-90" aria-hidden />
-            )}
-          </Button>
-        </div>
-      </CardHeader>
-
-      {expanded ? (
-        <CardContent className="gap-3 p-0">
+  const controls = (
+    <CardContent className="gap-3 p-0">
           <div className="flex items-center justify-between">
             <Button
               type="button"
@@ -276,7 +246,59 @@ export function MusicPlayerWidget({
             />
           </div>
         </CardContent>
-      ) : null}
+  );
+
+  const bar = (
+    <Card
+      variant="accent"
+      className={cn(
+        "gap-3 p-3",
+        dock ? "w-auto min-w-0 max-w-full" : expanded ? "w-72" : "w-auto",
+      )}
+    >
+      <CardHeader className="p-0">
+        <div className="flex items-center gap-2">
+          <Music width={24} height={24} className="shrink-0 text-accent" aria-hidden />
+          <p className="min-w-0 flex-1 truncate font-press-start text-[0.5rem] leading-relaxed text-foreground uppercase">
+            {currentTrack.title}
+          </p>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-expanded={expanded}
+            aria-label={expanded ? "Recolher player" : "Expandir player"}
+            onClick={toggleExpanded}
+          >
+            {expanded ? (
+              <ChevronLeft width={24} height={24} className="rotate-90" aria-hidden />
+            ) : (
+              <ChevronRight width={24} height={24} className="rotate-90" aria-hidden />
+            )}
+          </Button>
+        </div>
+      </CardHeader>
+      {expanded && !dock ? controls : null}
     </Card>
+  );
+
+  return (
+    <div
+      className={cn(
+        "relative",
+        fixed && "fixed right-4 bottom-4 z-50",
+        className,
+      )}
+    >
+      {bar}
+      {expanded && dock ? (
+        <Card
+          variant="accent"
+          className="absolute top-full right-0 z-30 mt-2 w-72 max-w-[calc(100vw-3rem)] gap-3 p-3"
+        >
+          {controls}
+        </Card>
+      ) : null}
+    </div>
   );
 }

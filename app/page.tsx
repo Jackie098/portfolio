@@ -15,6 +15,7 @@ import {
 } from "pixelarticons/react";
 
 import { HeroCodingAvatar } from "@/components/hero-coding-avatar";
+import { MusicPlayerWidget } from "@/components/music-player";
 import { PlayerDossier } from "@/components/player-dossier";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -97,9 +98,14 @@ export default function HomePage() {
             <Link href="/design-system">Design System</Link>
           </Button>
         </nav>
-        <div className="flex items-center gap-2">
-          <SoundToggle />
-          <ThemeToggle />
+        <div className="flex w-full min-w-0 items-center justify-between gap-2 md:w-auto">
+          <div className="flex items-center gap-2">
+            <SoundToggle />
+            <ThemeToggle />
+          </div>
+          <div className="relative ml-auto min-h-17 min-w-0 max-w-[calc(100%-6.5rem)] md:hidden">
+            <MusicPlayerWidget fixed={false} dock />
+          </div>
         </div>
       </header>
 
