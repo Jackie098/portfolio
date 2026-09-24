@@ -30,13 +30,19 @@ function subscribe(onChange: () => void) {
   };
 }
 
-function getSnapshot() {
-  return window.localStorage.getItem(STORAGE_KEY) === "true";
+function readStoredEnabled() {
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  if (stored === null) return true;
+  return stored === "true";
 }
 
-/** No servidor o som é sempre mudo — nunca autoplay. */
+function getSnapshot() {
+  return readStoredEnabled();
+}
+
+/** Sem preferência salva, som começa ligado. */
 function getServerSnapshot() {
-  return false;
+  return true;
 }
 
 function writeEnabled(value: boolean) {
@@ -120,5 +126,7 @@ export function useRetroSound(): SoundContextValue {
     }
   );
 }
+
+export { readStoredEnabled };
 
 export type { RetroSound };

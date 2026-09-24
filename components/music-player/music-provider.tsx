@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { TRACKS, type Track } from "@/components/music-player/tracks";
-import { useRetroSound } from "@/components/sound-provider";
+import { readStoredEnabled, useRetroSound } from "@/components/sound-provider";
 
 export type { Track };
 
@@ -138,6 +138,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const shuffleRef = React.useRef(prefs.shuffle);
   const repeatRef = React.useRef(prefs.repeat);
   const soundEnabledRef = React.useRef(soundEnabled);
+  /** Pausa ou mute explícitos. Desmutar não retoma a faixa. */
+  const userStoppedRef = React.useRef(false);
   const prevIndexRef = React.useRef<number | null>(null);
   const applyIndexRef = React.useRef<(next: number, shouldPlay: boolean) => void>(
     () => {},
@@ -285,7 +287,64 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     audio.addEventListener("play", onPlay);
     audio.addEventListener("pause", onPause);
 
+    let removeUnlock = () => {};
+
+    const startIfAllowed = () => {
+      if (!soundEnabledRef.current || userStoppedRef.current) return;
+      const gen = ++playGenRef.current;
+      audio.muted = false;
+      void audio.play().then(() => {
+        if (gen !== playGenRef.current || userStoppedRef.current || !soundEnabledRef.current) {
+          audio.pause();
+          setPlaying(false);
+          return;
+        }
+        setPlaying(true);
+      }).catch(() => {
+        if (gen === playGenRef.current) setPlaying(false);
+      });
+    };
+
+    const soundOn = readStoredEnabled();
+    soundEnabledRef.current = soundOn;
+    if (!soundOn) {
+      userStoppedRef.current = true;
+      audio.pause();
+    } else {
+      const gen = ++playGenRef.current;
+      audio.muted = false;
+      void audio.play().then(() => {
+        if (gen !== playGenRef.current || userStoppedRef.current || !soundEnabledRef.current) {
+          audio.pause();
+          setPlaying(false);
+          return;
+        }
+        setPlaying(true);
+      }).catch(() => {
+        if (gen !== playGenRef.current || userStoppedRef.current) return;
+        setPlaying(false);
+        const unlock = () => {
+          window.removeEventListener("click", unlock);
+          window.removeEventListener("keydown", unlock);
+          // Mute/pausa gravam no clique, antes deste listener no window.
+          if (!readStoredEnabled()) {
+            userStoppedRef.current = true;
+            return;
+          }
+          if (userStoppedRef.current) return;
+          startIfAllowed();
+        };
+        window.addEventListener("click", unlock);
+        window.addEventListener("keydown", unlock);
+        removeUnlock = () => {
+          window.removeEventListener("click", unlock);
+          window.removeEventListener("keydown", unlock);
+        };
+      });
+    }
+
     return () => {
+      removeUnlock();
       audio.removeEventListener("timeupdate", onTime);
       audio.removeEventListener("loadedmetadata", onTime);
       audio.removeEventListener("ended", onEnded);
@@ -308,13 +367,15 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     const audio = getSharedAudio();
     audio.muted = !soundEnabled;
     if (!soundEnabled) {
+      userStoppedRef.current = true;
+      playGenRef.current += 1;
       audio.pause();
-      return;
+      setPlaying(false);
     }
-    void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
   }, [soundEnabled]);
 
   const play = React.useCallback(() => {
+    userStoppedRef.current = false;
     if (!soundEnabledRef.current) setSoundEnabled(true);
     const audio = getSharedAudio();
     audio.muted = false;
@@ -322,6 +383,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   }, [setSoundEnabled]);
 
   const pause = React.useCallback(() => {
+    userStoppedRef.current = true;
+    playGenRef.current += 1;
     getSharedAudio().pause();
     setPlaying(false);
   }, []);
