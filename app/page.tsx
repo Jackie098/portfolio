@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   Code,
   Cpu,
@@ -15,10 +14,8 @@ import {
 } from "pixelarticons/react";
 
 import { HeroCodingAvatar } from "@/components/hero-coding-avatar";
-import { MusicPlayerWidget } from "@/components/music-player";
 import { PlayerDossier } from "@/components/player-dossier";
-import { SoundToggle } from "@/components/sound-toggle";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -67,14 +64,6 @@ const techItems: TechItem[] = tech.map((item) => ({
   icon: techIcons[item.id],
 }));
 
-const nav = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#xp", label: "XP" },
-  { href: "#cases", label: "Cases" },
-  { href: "#stack", label: "Stack" },
-  { href: "#contato", label: "Contato" },
-] as const;
-
 export const metadata: Metadata = {
   title: "Portfólio",
   description: `${site.name} — ${site.headline}. ${site.pitch}`,
@@ -83,36 +72,12 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="mx-auto min-w-0 max-w-5xl px-6">
-      <header className="sticky top-0 z-20 -mx-6 mb-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border bg-background/90 px-6 py-3 backdrop-blur-sm">
-        <nav aria-label="Seções" className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="font-press-start text-[0.45rem] text-muted-foreground hover:text-primary focus-visible:text-primary focus-visible:outline-none"
-            >
-              {item.label}
-            </a>
-          ))}
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/design-system">Design System</Link>
-          </Button>
-        </nav>
-        <div className="flex w-full min-w-0 items-center justify-between gap-2 md:w-auto">
-          <div className="flex items-center gap-2">
-            <SoundToggle />
-            <ThemeToggle />
-          </div>
-          <div className="relative ml-auto min-h-17 min-w-0 max-w-[calc(100%-6.5rem)] md:hidden">
-            <MusicPlayerWidget fixed={false} dock />
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex flex-col gap-20 pb-8">
         <section
           aria-labelledby="hero-heading"
-          className="flex min-h-[calc(100svh-7rem)] flex-col justify-center"
+          className="flex min-h-svh flex-col justify-center pt-24 md:min-h-[calc(100svh-7rem)] md:pt-0"
         >
           <div className="grid w-full min-w-0 items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-12">
             <div className="flex min-w-0 flex-col items-center gap-6 text-center md:items-start md:text-left">
