@@ -49,7 +49,7 @@ export function HeroCodingAvatar() {
         alt={alt}
         width={SOURCE}
         height={SOURCE}
-        className="absolute max-w-none dark:hidden rounded-lg"
+        className="absolute max-w-none dark:hidden rounded-3xl"
         style={cropStyle(lightCrop)}
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -58,7 +58,7 @@ export function HeroCodingAvatar() {
         alt={alt}
         width={SOURCE}
         height={SOURCE}
-        className="absolute max-w-none hidden dark:block rounded-lg"
+        className="absolute max-w-none hidden dark:block rounded-3xl"
         style={cropStyle(darkCrop)}
       />
     </figure>
