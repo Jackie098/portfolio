@@ -421,6 +421,15 @@ img,
   }
 }
 
+@media (max-width: 767px) {
+  .typing.typing-wrap {
+    white-space: normal;
+    max-width: 100%;
+    animation: none;
+    clip-path: none;
+  }
+}
+
 /* ============================================================
    Glitch — as camadas coloridas são spans reais com aria-hidden,
    não conteúdo gerado por CSS (que vários leitores de tela leem).

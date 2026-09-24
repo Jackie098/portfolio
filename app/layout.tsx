@@ -46,7 +46,7 @@ export default function RootLayout({
           <SoundProvider>
             <MusicProvider>
               <ParticleField />
-              <div className="relative z-10">{children}</div>
+              <div className="relative z-10 min-w-0 overflow-x-clip">{children}</div>
               <RetroCursor />
               <SelectionRandomizer />
               <MusicPlayerWidget className="max-md:hidden" />

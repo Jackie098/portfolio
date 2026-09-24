@@ -40,7 +40,7 @@ export function HeroCodingAvatar() {
 
   return (
     <figure
-      className="relative mx-auto w-full max-w-sm overflow-hidden md:mx-0 md:max-w-none filter-[drop-shadow(0_0_18px_color-mix(in_srgb,var(--primary)_35%,transparent))]"
+      className="relative mx-auto hidden w-full max-w-sm overflow-hidden md:mx-0 md:block md:max-w-none filter-[drop-shadow(0_0_18px_color-mix(in_srgb,var(--primary)_35%,transparent))]"
       style={{ aspectRatio: `${darkCrop.visW} / ${darkCrop.visH}` }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -82,8 +82,8 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-5xl px-6">
-      <header className="sticky top-0 z-20 -mx-6 mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-border bg-background/90 px-6 py-3 backdrop-blur-sm">
+    <div className="mx-auto min-w-0 max-w-5xl px-6">
+      <header className="sticky top-0 z-20 -mx-6 mb-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border bg-background/90 px-6 py-3 backdrop-blur-sm">
         <nav aria-label="Seções" className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {nav.map((item) => (
             <a
@@ -114,10 +114,10 @@ export default function HomePage() {
           aria-labelledby="hero-heading"
           className="flex min-h-[calc(100svh-7rem)] flex-col justify-center"
         >
-          <div className="grid w-full items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-12">
-            <div className="flex flex-col items-center gap-6 text-center md:items-start md:text-left">
-              <p className="font-press-start text-[0.5rem] text-success">
-                <TypingText text={`> ${site.headline}`} />
+          <div className="grid w-full min-w-0 items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-12">
+            <div className="flex min-w-0 flex-col items-center gap-6 text-center md:items-start md:text-left">
+              <p className="w-full min-w-0 max-w-full font-press-start text-[0.5rem] text-success">
+                <TypingText className="typing-wrap" text={`> ${site.headline}`} />
               </p>
               <h1
                 id="hero-heading"
@@ -274,7 +274,7 @@ export default function HomePage() {
 
         <section
           id="contato"
-          className="scroll-mt-24 pb-8"
+          className="scroll-mt-24 pb-8 text-center md:text-left"
           aria-labelledby="contato-heading"
         >
           <h2
@@ -283,12 +283,12 @@ export default function HomePage() {
           >
             Contato
           </h2>
-          <p className="mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground">
+          <p className="mx-auto mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground md:mx-0">
             Se quiser conversar sobre projeto, oportunidade ou parceria, pode
             me chamar no LinkedIn. Se preferir, também deixei email e CV logo
             abaixo.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-3 md:justify-start">
             <Button asChild variant="primary" size="lg">
               <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
                 <Linkedin width={24} height={24} aria-hidden />
