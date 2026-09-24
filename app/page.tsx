@@ -174,7 +174,7 @@ export default function HomePage() {
                 alt={`${site.name} em pixel art, variação tech mage`}
                 width={1024}
                 height={1024}
-                className="h-auto w-full"
+                className="h-auto w-full rounded-lg"
               />
             </figure>
             <div className="flex flex-col gap-4 text-sm leading-relaxed text-muted-foreground md:items-end md:text-right">

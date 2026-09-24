@@ -43,7 +43,7 @@ export function PlayerDossier({ children }: PlayerDossierProps) {
           type="button"
           variant="accent"
           size="lg"
-          className={cn("pointer-events-auto", open && "invisible")}
+          className={cn("pointer-events-auto bg-card", open && "invisible")}
           aria-expanded={open}
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
