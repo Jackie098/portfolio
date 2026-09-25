@@ -15,6 +15,7 @@ import {
   VolumeX,
 } from "pixelarticons/react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 
 import { useMusicPlayer } from "@/components/music-player/music-provider";
 import { Button } from "@/components/ui/button";
@@ -101,6 +102,41 @@ export function MusicPlayerWidget({
     getExpandedServerSnapshot,
   );
   const lastVolume = React.useRef(0.6);
+  const dockRef = React.useRef<HTMLDivElement>(null);
+  const [dockBox, setDockBox] = React.useState<{ top: number; right: number } | null>(
+    null,
+  );
+  const [portalReady, setPortalReady] = React.useState(false);
+
+  React.useEffect(() => {
+    setPortalReady(true);
+  }, []);
+
+  React.useLayoutEffect(() => {
+    if (!dock || !expanded) return;
+
+    const update = () => {
+      const node = dockRef.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) {
+        setDockBox(null);
+        return;
+      }
+      setDockBox({
+        top: rect.bottom + 8,
+        right: Math.max(16, window.innerWidth - rect.right),
+      });
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, { capture: true, passive: true });
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
+  }, [dock, expanded]);
 
   const toggleExpanded = () => {
     writeExpanded(!expanded);
@@ -266,6 +302,7 @@ export function MusicPlayerWidget({
             type="button"
             variant="ghost"
             size="icon"
+            className="shrink-0"
             aria-expanded={expanded}
             aria-label={expanded ? "Recolher player" : "Expandir player"}
             onClick={toggleExpanded}
@@ -282,8 +319,23 @@ export function MusicPlayerWidget({
     </Card>
   );
 
+  const dockPanel =
+    expanded && dock && portalReady && dockBox
+      ? createPortal(
+          <Card
+            variant="accent"
+            className="fixed z-50 w-72 max-w-[calc(100vw-2rem)] gap-3 p-3"
+            style={{ top: dockBox.top, right: dockBox.right }}
+          >
+            {controls}
+          </Card>,
+          document.body,
+        )
+      : null;
+
   return (
     <div
+      ref={dock ? dockRef : undefined}
       className={cn(
         "relative",
         fixed && "fixed right-4 bottom-4 z-50",
@@ -291,14 +343,7 @@ export function MusicPlayerWidget({
       )}
     >
       {bar}
-      {expanded && dock ? (
-        <Card
-          variant="accent"
-          className="absolute top-full right-0 z-30 mt-2 w-72 max-w-[calc(100vw-3rem)] gap-3 p-3"
-        >
-          {controls}
-        </Card>
-      ) : null}
+      {dockPanel}
     </div>
   );
 }
