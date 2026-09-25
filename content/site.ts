@@ -12,6 +12,12 @@ export const site = {
   cv: "/cv_Carlos_Augusto_09-26.pdf",
   cvFilename: "CV_Carlos_Augusto.pdf",
   avatar: "/carlos-pixel-profile-avatar.png",
+  logoCa: "/carlos-augusto-logo-ca.png",
+  logoCaLight: "/carlos-augusto-logo-ca-light.png",
+  logoMark: "/carlos-augusto-logo-mark.png",
+  logoMarkLight: "/carlos-augusto-logo-mark-light.png",
+  favicon: "/carlos-augusto-logo-mark.ico",
+  faviconLight: "/carlos-augusto-logo-mark-light.ico",
   heroCodingAvatar: "/carlos-pixel-avatar-coding-laptop-tight-frame.png",
   heroCodingAvatarLight:
     "/carlos-pixel-avatar-coding-desliga-isso-deadpan-tight-frame.png",
