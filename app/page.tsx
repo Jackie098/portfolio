@@ -14,6 +14,7 @@ import {
 } from "pixelarticons/react";
 
 import { HeroCodingAvatar } from "@/components/hero-coding-avatar";
+import { ThemeAsset } from "@/components/theme-asset";
 import { PlayerDossier } from "@/components/player-dossier";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -81,6 +82,14 @@ export default function HomePage() {
         >
           <div className="grid w-full min-w-0 items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-12">
             <div className="flex min-w-0 flex-col items-center gap-6 text-center md:items-start md:text-left">
+              <ThemeAsset
+                darkSrc={site.logoMark}
+                lightSrc={site.logoMarkLight}
+                alt={`Marca ${site.name}`}
+                width={1024}
+                height={1024}
+                className="aspect-square w-40 md:hidden"
+              />
               <p className="w-full min-w-0 max-w-full font-press-start text-[0.5rem] text-success">
                 <TypingText className="typing-wrap" text={`> ${site.headline}`} />
               </p>

@@ -6,9 +6,11 @@ import * as React from "react";
 
 import { MusicPlayerWidget } from "@/components/music-player";
 import { SoundToggle } from "@/components/sound-toggle";
+import { ThemeAsset } from "@/components/theme-asset";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { site } from "@/content/site";
 
 const nav = [
   { href: "#sobre", label: "Sobre" },
@@ -49,16 +51,32 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-20 -mx-6 mb-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border bg-background/90 px-6 py-3 backdrop-blur-sm max-md:hidden">
-        <nav aria-label="Seções" className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {nav.map((item) => (
-            <a key={item.href} href={item.href} className={linkClassName}>
-              {item.label}
-            </a>
-          ))}
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/design-system">Design System</Link>
-          </Button>
-        </nav>
+        <div className="flex min-w-0 items-center gap-4">
+          <Link
+            href="/"
+            aria-label={site.name}
+            className="flex h-10 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <ThemeAsset
+              darkSrc={site.logoCa}
+              lightSrc={site.logoCaLight}
+              alt=""
+              width={697}
+              height={827}
+              className="aspect-697/827 h-10 max-h-10 w-auto overflow-hidden"
+            />
+          </Link>
+          <nav aria-label="Seções" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {nav.map((item) => (
+              <a key={item.href} href={item.href} className={linkClassName}>
+                {item.label}
+              </a>
+            ))}
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/design-system">Design System</Link>
+            </Button>
+          </nav>
+        </div>
         <div className="flex items-center gap-2">
           <SoundToggle />
           <ThemeToggle />
