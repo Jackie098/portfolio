@@ -7,6 +7,8 @@ import { RetroCursor } from "@/components/retro-cursor";
 import { SelectionRandomizer } from "@/components/selection-randomizer";
 import { SoundProvider } from "@/components/sound-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { faviconBootScript, ThemeFavicon } from "@/components/theme-favicon";
+import { site } from "@/content/site";
 
 import "./globals.css";
 
@@ -30,6 +32,9 @@ export const metadata: Metadata = {
   },
   description:
     "Desenvolvedor Full Stack | Java · React · PostgreSQL. Serviços digitais e produto a partir de Teresina, PI.",
+  icons: {
+    icon: site.favicon,
+  },
 };
 
 export default function RootLayout({
@@ -42,7 +47,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background pb-28 font-orbitron text-foreground">
+        <script dangerouslySetInnerHTML={{ __html: faviconBootScript }} />
         <ThemeProvider>
+          <ThemeFavicon />
           <SoundProvider>
             <MusicProvider>
               <ParticleField />
