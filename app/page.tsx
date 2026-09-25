@@ -66,7 +66,7 @@ const techItems: TechItem[] = tech.map((item) => ({
 }));
 
 export const metadata: Metadata = {
-  title: "Portfólio",
+  title: "Carlos - Dev Full Stack",
   description: `${site.name} — ${site.headline}. ${site.pitch}`,
 };
 
